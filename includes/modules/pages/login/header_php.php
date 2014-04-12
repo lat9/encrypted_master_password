@@ -101,7 +101,7 @@ if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
         if (!defined('EMP_LOGIN_ADMIN_PROFILE_ID')) define ('EMP_LOGIN_ADMIN_PROFILE_ID', 1);  /*lat9-a*/
         $admin_profile_query = "SELECT admin_id, admin_pass 
                                   FROM " . TABLE_ADMIN . " 
-                                  WHERE admin_profile = " . (int)EMP_LOGIN_ADMIN_PROFILE_ID;
+                                  WHERE admin_profile IN (" . EMP_LOGIN_ADMIN_PROFILE_ID . ")";  //-v1.9.0c-lat9
         $admin_profiles = $db->Execute($admin_profile_query);
 //-eof-lat9-a
         $ProceedToLogin = false;
