@@ -6,7 +6,7 @@
  * @copyright Copyright 2003-2011 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version $Id: header_php.php 18695 2011-05-04 05:24:19Z drbyte $
+ * @version GIT: $Id: Author: DrByte  Thu Mar 6 14:59:16 2014 -0500 Modified in v1.5.3 $
  */
 
 // This should be first line of the script:
@@ -30,6 +30,10 @@ if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
   $email_address = zen_db_prepare_input($_POST['email_address']);
   $password = zen_db_prepare_input($_POST['password']);
   
+//-bof-encrypted_master_password *** 1/3
+  $ProceedToLogin = false;  //-v2.0.0a
+//-eof-encrypted_master_password *** 1/3
+
   /* Privacy-policy-read does not need to be checked during "login"
   if (DISPLAY_PRIVACY_CONDITIONS == 'true') {
   if (!isset($_POST['privacy_conditions']) || ($_POST['privacy_conditions'] != '1')) {
@@ -58,11 +62,12 @@ if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
       $messageStack->add('login', TEXT_LOGIN_BANNED);
       
       // Check that password is good
-//-bof-Encrypted Master Password by stagebrace *** 1/1
+//-bof-encrypted_master_password by stagebrace *** 2/3
       //- Start modifications by lat9:
 //-bof-a-v1.6.0
     } elseif ($emp_login === true) {
       $ProceedToLogin = true;
+      $password_type = 'none';  //-v2.0.0a
       $_SESSION['emp_admin_login'] = true;
       $_SESSION['emp_admin_id'] = (int)$_POST['aID'];
 //-bof-a-v1.7.0
@@ -82,35 +87,41 @@ if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
     } else {
       //--- Either specific admin ID or an admin within a specific admin profile can use their password to login.
       if (!defined('EMP_LOGIN_ADMIN_ID')) define ('EMP_LOGIN_ADMIN_ID', 1);  /*lat9-a/c*/
-      $get_admin_query = "SELECT admin_id, admin_pass
+      $get_admin_query = "SELECT admin_id, admin_pass, admin_name
                           FROM " . TABLE_ADMIN . "
-                          WHERE admin_id = " . (int)EMP_LOGIN_ADMIN_ID;  /*lat9-c*/
+                          WHERE admin_id = " . (int)EMP_LOGIN_ADMIN_ID;  //-v2.0.0c (added admin_name)
       $check_administrator = $db->Execute($get_admin_query);
       $customer = (zen_validate_password($password, $check_customer->fields['customers_password']));
       $administrator = (zen_validate_password($password, $check_administrator->fields['admin_pass']));
       if ($customer) {
         $ProceedToLogin = true;
+        $password_type = 'customer';  //-v2.0.0a
+        $password_to_check = $check_customer->fields['customers_password'];  //-v2.0.0a    
         
       } elseif ($administrator) {
           $ProceedToLogin = true;
           $_SESSION['emp_admin_login'] = true;  /*lat9-a*/
           $_SESSION['emp_admin_id'] = EMP_LOGIN_ADMIN_ID;
+          $password_type = 'admin';  //-v2.0.0a
+          $admin_name = $check_administrator->fields['admin_name'];  //-v2.0.0a
+          $password_to_check = $check_administrator->fields['admin_pass'];  //-v2.0.0a
           
       } else {
 //-bof-lat9-a
         if (!defined('EMP_LOGIN_ADMIN_PROFILE_ID')) define ('EMP_LOGIN_ADMIN_PROFILE_ID', 1);  /*lat9-a*/
-        $admin_profile_query = "SELECT admin_id, admin_pass 
+        $admin_profile_query = "SELECT admin_id, admin_pass, admin_name
                                   FROM " . TABLE_ADMIN . " 
-                                  WHERE admin_profile IN (" . EMP_LOGIN_ADMIN_PROFILE_ID . ")";  //-v1.9.0c-lat9
+                                  WHERE admin_profile IN (" . EMP_LOGIN_ADMIN_PROFILE_ID . ")";  //-v2.0.0c-lat9 (added admin_name)
         $admin_profiles = $db->Execute($admin_profile_query);
-//-eof-lat9-a
-        $ProceedToLogin = false;
-//-bof-lat9-a
         while (!$admin_profiles->EOF && !$ProceedToLogin) {
           $ProceedToLogin = zen_validate_password($password, $admin_profiles->fields['admin_pass']);
           if ($ProceedToLogin) {
             $_SESSION['emp_admin_login'] = true;
             $_SESSION['emp_admin_id'] = $admin_profiles->fields['admin_id'];
+            $password_type = 'admin';  //-v2.0.0a
+            $admin_name = $admin_profiles->fields['admin_name'];  //-v2.0.0a
+            $password_to_check = $admin_profiles->fields['admin_pass'];  //-v2.0.0a
+            
           }
           $admin_profiles->MoveNext();
         }
@@ -118,10 +129,25 @@ if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
       }
     }
       if (!($ProceedToLogin)) {
-//-eof-Encrypted Master Password by stagebrace *** 1/1
+//-eof-encrypted_master_password by stagebrace *** 2/3
         $error = true;
         $messageStack->add('login', TEXT_LOGIN_ERROR);
       } else {
+//-bof-encrypted_master_password-v2.0.0a *** 3/3
+        // -----
+        // Handle password re-hashing introduced in Zen Cart v1.5.3
+        //
+        if (function_exists ('password_needs_rehash') && password_needs_rehash ($password_to_check, PASSWORD_DEFAULT)) {
+          if ($password_type == 'customer') {
+            zcPassword::getInstance(PHP_VERSION)->updateNotLoggedInCustomerPassword ($password, $email_address);
+            
+          } elseif ($password_type == 'admin') {
+             zcPassword::getInstance(PHP_VERSION)->updateNotLoggedInAdminPassword ($password, $admin_name);
+            
+          }
+        }
+//-eof-encrypted_master_password-v2.0.0a *** 3/3
+
         if (SESSION_RECREATE == 'True') {
           zen_session_recreate();
         }
@@ -142,10 +168,21 @@ if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
         $_SESSION['customer_last_name'] = $check_customer->fields['customers_lastname'];
         $_SESSION['customer_country_id'] = $check_country->fields['entry_country_id'];
         $_SESSION['customer_zone_id'] = $check_country->fields['entry_zone_id'];
+        
+        // enforce db integrity: make sure related record exists
+        $sql = "SELECT customers_info_date_of_last_logon FROM " . TABLE_CUSTOMERS_INFO . " WHERE customers_info_id = :customersID";
+        $sql = $db->bindVars($sql, ':customersID',  $_SESSION['customer_id'], 'integer');
+        $result = $db->Execute($sql);
+        if ($result->RecordCount() == 0) {
+          $sql = "insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id) values (:customersID)";
+          $sql = $db->bindVars($sql, ':customersID',  $_SESSION['customer_id'], 'integer');
+          $db->Execute($sql);
+        }
 
+        // update login count
         $sql = "UPDATE " . TABLE_CUSTOMERS_INFO . "
               SET customers_info_date_of_last_logon = now(),
-                  customers_info_number_of_logons = customers_info_number_of_logons+1
+                  customers_info_number_of_logons = IF(customers_info_number_of_logons, customers_info_number_of_logons+1, 1)
               WHERE customers_info_id = :customersID";
 
         $sql = $db->bindVars($sql, ':customersID',  $_SESSION['customer_id'], 'integer');
