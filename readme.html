@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Encrypted Master Password (Zen-Cart 1.5.0, 1.5.1, 1.5.2)</title>
+<title>Encrypted Master Password (Zen-Cart 1.5.0, 1.5.1, 1.5.2, 1.5.3)</title>
 
 <style type="text/css">
 <!--
@@ -38,57 +38,13 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
 
 <body>
 <a name="top" id="top"></a>
-<h1>Encrypted Master Password for Zen Cart 1.5.0, 1.5.1, 1.5.2</h1>
-<h3>Version 1.9.0 by lat9</h3>
+<h1>Encrypted Master Password for Zen Cart 1.5.0, 1.5.1, 1.5.2, 1.5.3</h1>
+<h3>Version 2.0.0 by lat9</h3>
 <p>Current Support Thread at Zen Cart Forums: <a href="www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support">www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support</a></p>
 <h3>Usage Notes</h3>
 <ol>
-  <li>Version 1.8.0 (and later) of this plugin includes v1.1.0 of the proposed "Common Orders-Status Update Interface" documented in this Zen Cart posting: <a href="http://www.zen-cart.com/showthread.php?209162-Add-admin_id-field-to-orders_status_history-table&p=1212431#post1212431" target="_blank">http://www.zen-cart.com/showthread.php?209162-Add-admin_id-field-to-orders_status_history-table&p=1212431#post1212431</a>.  Please make sure that you've subscribed to the current support forum for <em>Encrypted Master Password</em>; I'll post there if there's an interface update required.</a>
+  <li>Version 1.8.0 (and later) of this plugin includes v1.1.0 of the "Common Orders-Status Update Interface", available <a href="http://www.zen-cart.com/downloads.php?do=file&id=1839" target="_blank">here</a>.  Please make sure that you've subscribed to the current support forum for <em>Encrypted Master Password</em>; I'll post there if there's an interface update required.</a>
 </ol>
-<h2>Version History:</h2>
-<ul>
-  <li>v1.0.0, 2006-07-04 (Dennis Sayer, aka stagebrace):<ul>
-    <li>Initial release; sponsored by <a href="www.brandnamebatteries.com" target="_blank">Brand Name Batteries for Less</a>.</li>
-  </ul></li>
-  <li>v1.1.0, 2007-01-16 (Dennis Sayer):<ul>
-    <li>Added new code that appeared with Zen Cart 1.3.7.</li>
-    <li>A few wording changes in this document.</li>
-  </ul></li>
-  <li>v1.2.0, 2007-12-01 (Dennis Sayer):<ul>
-    <li>Added new code that appeared with Zen Cart 1.3.8.</li>
-  </ul></li>
-  <li>v1.5.0, 2012-01-19 (dbltoe):<ul>
-    <li>Added EMP code to the header_php.php as modified in the new Zen Cart 1.5.0.</li>
-    <li>Modified this file to reflect the current information.</li>
-  </ul></li>
-  <li>v1.5.1, 2013-04-30 (lat9):<ul>
-    <li>Updated EMP code to use a define (in preparation for moving it to a configuration setting) for a single admin ID.</li>
-    <li>Added code to allow all admins in a specified admin_profile group to perform the EMP function.</li>
-    <li>When an EMP admin signs into a customer account, set session variables indicating the type of login and the admin_id of the EMP admin.</li>
-    <li>Modified this readme to reflect the current implementation.</li>
-  </ul></li>
-  <li>v1.5.2, 2013-05-16 (lat9):<ul>
-    <li>BUGFIX: White-screen-of-death due to unclosed parentheses.</li>
-  </ul></li>
-  <li>v1.6.0, 2013-07-08 (lat9):<ul>
-    <li>Added SQL statements to move the two configuration values for the plugin into the database.</li>
-    <li>Added "Place Order" button in your admin's <em>Customers-&gt;Customers</em> to allow an enabled EMP admin to automatically log into a customer's account.</li>
-  </ul></li>
-  <li>v1.7.0, 2013-09-08 (lat9):<ul>
-    <li>Added an <em>updated_by</em> column to the <em>orders_status_history</em> table.</li>
-    <li>When an order is placed by an EMP admin, that admin's ID and name will appear in the <b>updated_by</b> field of the initial <b>orders_status_history</b> record for the order.</li>
-    <li>When an EMP admin logs into a customer account, a record is created in the <b>admin_activity_log</b> database table.</li>
-  </ul></li>
-  <li>v1.8.0, 2013-11-29 (lat9):<ul>
-    <li>Incorporate downwardly-compatible changes introduced in Zen Cart v1.5.2.</li>
-    <li>Update the "Common Orders-Status Update Interface" to v1.1.0.</li> 
-  </ul></li>
-  <li>v1.9.0, 2014-04-12 (lat9):<ul>
-    <li>Updates to support multiple EMP admin profiles.<ol>
-      <li>The initialization .sql script is now imbedded in a PHP script (/YOUR_ADMIN/includes/functions/extra_functions/init_emp_configuration.php).</li>
-      <li>A minor update to the <span class="corefile">core-file</span> change to /includes/modules/pages/login/header_php.php.</li>
-  </ul></li>
-</ul>
 
 <hr />
 <h2>What it does</h2>
@@ -141,5 +97,57 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
 <hr />
 <h2>Un-install</h2>
 <p>Replace the <span class="corefile">core files</span> that were previously overwritten with the backup version that you created. You <strong>did</strong> make a backup, didn't you? Delete the other files copied during the installation. Finally, run the <strong>emp_uninstall.sql</strong> to remove the configuration keys from your database.</p>
+
+<hr />
+<h2>Version History:</h2>
+<ul>
+  <li>v1.0.0, 2006-07-04 (Dennis Sayer, aka stagebrace):<ul>
+    <li>Initial release; sponsored by <a href="www.brandnamebatteries.com" target="_blank">Brand Name Batteries for Less</a>.</li>
+  </ul></li>
+  <li>v1.1.0, 2007-01-16 (Dennis Sayer):<ul>
+    <li>Added new code that appeared with Zen Cart 1.3.7.</li>
+    <li>A few wording changes in this document.</li>
+  </ul></li>
+  <li>v1.2.0, 2007-12-01 (Dennis Sayer):<ul>
+    <li>Added new code that appeared with Zen Cart 1.3.8.</li>
+  </ul></li>
+  <li>v1.5.0, 2012-01-19 (dbltoe):<ul>
+    <li>Added EMP code to the header_php.php as modified in the new Zen Cart 1.5.0.</li>
+    <li>Modified this file to reflect the current information.</li>
+  </ul></li>
+  <li>v1.5.1, 2013-04-30 (lat9):<ul>
+    <li>Updated EMP code to use a define (in preparation for moving it to a configuration setting) for a single admin ID.</li>
+    <li>Added code to allow all admins in a specified admin_profile group to perform the EMP function.</li>
+    <li>When an EMP admin signs into a customer account, set session variables indicating the type of login and the admin_id of the EMP admin.</li>
+    <li>Modified this readme to reflect the current implementation.</li>
+  </ul></li>
+  <li>v1.5.2, 2013-05-16 (lat9):<ul>
+    <li>BUGFIX: White-screen-of-death due to unclosed parentheses.</li>
+  </ul></li>
+  <li>v1.6.0, 2013-07-08 (lat9):<ul>
+    <li>Added SQL statements to move the two configuration values for the plugin into the database.</li>
+    <li>Added "Place Order" button in your admin's <em>Customers-&gt;Customers</em> to allow an enabled EMP admin to automatically log into a customer's account.</li>
+  </ul></li>
+  <li>v1.7.0, 2013-09-08 (lat9):<ul>
+    <li>Added an <em>updated_by</em> column to the <em>orders_status_history</em> table.</li>
+    <li>When an order is placed by an EMP admin, that admin's ID and name will appear in the <b>updated_by</b> field of the initial <b>orders_status_history</b> record for the order.</li>
+    <li>When an EMP admin logs into a customer account, a record is created in the <b>admin_activity_log</b> database table.</li>
+  </ul></li>
+  <li>v1.8.0, 2013-11-29 (lat9):<ul>
+    <li>Incorporate downwardly-compatible changes introduced in Zen Cart v1.5.2.</li>
+    <li>Update the "Common Orders-Status Update Interface" to v1.1.0.</li> 
+  </ul></li>
+  <li>v1.9.0, 2014-04-12 (lat9):<ul>
+    <li>Updates to support multiple EMP admin profiles.<ol>
+      <li>The initialization .sql script is now imbedded in a PHP script (/YOUR_ADMIN/includes/functions/extra_functions/init_emp_configuration.php).</li>
+      <li>A minor update to the <span class="corefile">core-file</span> change to /includes/modules/pages/login/header_php.php.</li>
+    </ol></li>
+  </ul></li>
+  <li>v2.0.0, 2014-05-xx (lat9):<ul>
+    <li><em>Conditionally</em> incorporate changes introduced in Zen Cart v1.5.3.  Changed:<ol>
+      <li><span class="corefile">/includes/modules/pages/login/header_php.php</span></li>
+    </ol></li>
+  </ul></li>
+</ul>
 </body>
 </html>
