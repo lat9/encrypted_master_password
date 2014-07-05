@@ -3,7 +3,7 @@
  * Login Page
  *
  * @package page
- * @copyright Copyright 2003-2011 Zen Cart Development Team
+ * @copyright Copyright 2003-2014 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
  * @version GIT: $Id: Author: DrByte  Thu Mar 6 14:59:16 2014 -0500 Modified in v1.5.3 $
@@ -29,10 +29,7 @@ $error = false;
 if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
   $email_address = zen_db_prepare_input($_POST['email_address']);
   $password = zen_db_prepare_input($_POST['password']);
-  
-//-bof-encrypted_master_password *** 1/3
-  $ProceedToLogin = false;  //-v2.0.0a
-//-eof-encrypted_master_password *** 1/3
+  $loginAuthorized = false;
 
   /* Privacy-policy-read does not need to be checked during "login"
   if (DISPLAY_PRIVACY_CONDITIONS == 'true') {
@@ -60,94 +57,25 @@ if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
       // this account is banned
       $zco_notifier->notify('NOTIFY_LOGIN_BANNED');
       $messageStack->add('login', TEXT_LOGIN_BANNED);
-      
-      // Check that password is good
-//-bof-encrypted_master_password by stagebrace *** 2/3
-      //- Start modifications by lat9:
-//-bof-a-v1.6.0
-    } elseif ($emp_login === true) {
-      $ProceedToLogin = true;
-      $password_type = 'none';  //-v2.0.0a
-      $_SESSION['emp_admin_login'] = true;
-      $_SESSION['emp_admin_id'] = (int)$_POST['aID'];
-//-bof-a-v1.7.0
-      $sql_data_array = array( 'access_date' => 'now()',
-                               'admin_id' => $_SESSION['emp_admin_id'],
-                               'page_accessed' => 'login.php',
-                               'page_parameters' => '',
-                               'ip_address' => substr($_SERVER['REMOTE_ADDR'],0,45),
-                               'gzpost' => gzdeflate( json_encode( array ( 'action' => 'emp_admin_login' )), 7),
-                               'flagged' => 0,
-                               'attention' => '',
-                               );
-      zen_db_perform(TABLE_ADMIN_ACTIVITY_LOG, $sql_data_array);
-//-eof-a-v1.7.0
-//-eof-a-v1.6.0
-      
     } else {
-      //--- Either specific admin ID or an admin within a specific admin profile can use their password to login.
-      if (!defined('EMP_LOGIN_ADMIN_ID')) define ('EMP_LOGIN_ADMIN_ID', 1);  /*lat9-a/c*/
-      $get_admin_query = "SELECT admin_id, admin_pass, admin_name
-                          FROM " . TABLE_ADMIN . "
-                          WHERE admin_id = " . (int)EMP_LOGIN_ADMIN_ID;  //-v2.0.0c (added admin_name)
-      $check_administrator = $db->Execute($get_admin_query);
-      $customer = (zen_validate_password($password, $check_customer->fields['customers_password']));
-      $administrator = (zen_validate_password($password, $check_administrator->fields['admin_pass']));
-      if ($customer) {
-        $ProceedToLogin = true;
-        $password_type = 'customer';  //-v2.0.0a
-        $password_to_check = $check_customer->fields['customers_password'];  //-v2.0.0a    
-        
-      } elseif ($administrator) {
-          $ProceedToLogin = true;
-          $_SESSION['emp_admin_login'] = true;  /*lat9-a*/
-          $_SESSION['emp_admin_id'] = EMP_LOGIN_ADMIN_ID;
-          $password_type = 'admin';  //-v2.0.0a
-          $admin_name = $check_administrator->fields['admin_name'];  //-v2.0.0a
-          $password_to_check = $check_administrator->fields['admin_pass'];  //-v2.0.0a
-          
-      } else {
-//-bof-lat9-a
-        if (!defined('EMP_LOGIN_ADMIN_PROFILE_ID')) define ('EMP_LOGIN_ADMIN_PROFILE_ID', 1);  /*lat9-a*/
-        $admin_profile_query = "SELECT admin_id, admin_pass, admin_name
-                                  FROM " . TABLE_ADMIN . " 
-                                  WHERE admin_profile IN (" . EMP_LOGIN_ADMIN_PROFILE_ID . ")";  //-v2.0.0c-lat9 (added admin_name)
-        $admin_profiles = $db->Execute($admin_profile_query);
-        while (!$admin_profiles->EOF && !$ProceedToLogin) {
-          $ProceedToLogin = zen_validate_password($password, $admin_profiles->fields['admin_pass']);
-          if ($ProceedToLogin) {
-            $_SESSION['emp_admin_login'] = true;
-            $_SESSION['emp_admin_id'] = $admin_profiles->fields['admin_id'];
-            $password_type = 'admin';  //-v2.0.0a
-            $admin_name = $admin_profiles->fields['admin_name'];  //-v2.0.0a
-            $password_to_check = $admin_profiles->fields['admin_pass'];  //-v2.0.0a
-            
-          }
-          $admin_profiles->MoveNext();
+
+      $dbPassword = $check_customer->fields['customers_password'];
+      // Check whether the password is good
+      if (zen_validate_password($password, $dbPassword)) {
+        $loginAuthorized = true;
+//-bof-EMP-v2.0.0-Add condition for pre-Zen Cart v1.5.3 installations  *** 1 of 1 ***
+        if (function_exists ('password_needs_rehash') && password_needs_rehash($dbPassword, PASSWORD_DEFAULT)) {
+//-eof-EMP-v2.0.0
+          $newPassword = zcPassword::getInstance(PHP_VERSION)->updateNotLoggedInCustomerPassword($password, $email_address);
         }
-//-eof-lat9-a
       }
-    }
-      if (!($ProceedToLogin)) {
-//-eof-encrypted_master_password by stagebrace *** 2/3
+
+      $zco_notifier->notify('NOTIFY_PROCESS_3RD_PARTY_LOGINS', $email_address, $password, $loginAuthorized);
+
+      if (!$loginAuthorized) {
         $error = true;
         $messageStack->add('login', TEXT_LOGIN_ERROR);
       } else {
-//-bof-encrypted_master_password-v2.0.0a *** 3/3
-        // -----
-        // Handle password re-hashing introduced in Zen Cart v1.5.3
-        //
-        if (function_exists ('password_needs_rehash') && password_needs_rehash ($password_to_check, PASSWORD_DEFAULT)) {
-          if ($password_type == 'customer') {
-            zcPassword::getInstance(PHP_VERSION)->updateNotLoggedInCustomerPassword ($password, $email_address);
-            
-          } elseif ($password_type == 'admin') {
-             zcPassword::getInstance(PHP_VERSION)->updateNotLoggedInAdminPassword ($password, $admin_name);
-            
-          }
-        }
-//-eof-encrypted_master_password-v2.0.0a *** 3/3
-
         if (SESSION_RECREATE == 'True') {
           zen_session_recreate();
         }
@@ -168,7 +96,7 @@ if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
         $_SESSION['customer_last_name'] = $check_customer->fields['customers_lastname'];
         $_SESSION['customer_country_id'] = $check_country->fields['entry_country_id'];
         $_SESSION['customer_zone_id'] = $check_country->fields['entry_zone_id'];
-        
+
         // enforce db integrity: make sure related record exists
         $sql = "SELECT customers_info_date_of_last_logon FROM " . TABLE_CUSTOMERS_INFO . " WHERE customers_info_id = :customersID";
         $sql = $db->bindVars($sql, ':customersID',  $_SESSION['customer_id'], 'integer');
@@ -229,7 +157,7 @@ if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
           zen_redirect(zen_href_link(FILENAME_DEFAULT, '', $request_type));
         }
       }
-
+    }
 }
 if ($error == true) {
   $zco_notifier->notify('NOTIFY_LOGIN_FAILURE');

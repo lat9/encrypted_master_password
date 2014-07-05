@@ -61,7 +61,8 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
   <li><em>No admins have EMP privileges:</em> Single Admin ID set to 0, Admin Profile ID set to 0.</li>
 </ul>
 <h3>Customers-&gt;Customers</h3>
-<p>When an admin with EMP permissions views the <em>Customers-&gt;Customers</em> screen, there is an additional button available for the currently-selected customer: <strong>Place Order</strong>. Clicking that button will open a new window, <em>automatically</em> logging the admin into the selected customer's account in your store!</p>
+<p>When an admin with EMP permissions views the <em>Customers-&gt;Customers</em> screen, there is an additional button available for the currently-selected customer: <strong>Place Order</strong>. Clicking that button will open a new window, taking the admin to your store's <em>login</em> page.  From that page, the admin enters his/her Zen Cart admin password to log into the customer's account!</p>
+<p><strong>Note</strong> Versions 1.6.0 through 1.8.0 of this plugin provided an &quot;automatic&quot; login to the customer's account; version 2.0.0 changed this behavior, now requiring the admin-level password to log into the customer's account.  This change was made to enable the use of the additional password validation methods introduced in Zen Cart v1.5.3 and in light of potential PCI concerns.  With the previous behavior, if someone broke into your Zen Cart admin they would have &quot;the keys to the kingdom&quot; &mdash; access to all your customers' accounts.</p>
 <h3>In Your Store</h3>
 <p>When an EMP admin logs into a customer account, two session variables are set to identify this condition for future, additional plugins:</p>
 <ol>
@@ -74,11 +75,14 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
 <h2>Installation</h2>
 <p>There are <span class="corefile">core-file overwrites</span> in this plugin; you should <strong>always</strong> backup your cart&rsquo;s database and files prior to making any changes.  The files identified using <span class="osh">this</span> color are part of the "Common Orders-Status Update" interface and are subject to separate change!</p>
 <ol>
-  <li>Compare the <strong>/includes/modules/pages/login/header_php.php</strong> file included with this plugin with the one currently being used at your store. This plugin's changes (1 block) are surrounded by comments that contain the string <em>-Encrypted Master Password</em>.  If you have made modifications to your current copy of this file, simply copy the blocks of changes to your previously-modified copy; otherwise, you'll use the version of the file from this plugin.</li>
+  <li>If you are currently running Zen Cart v1.5.0 through v1.5.2<ol type="a">
+    <li>Copy the plugin's /before_zc153/includes/classes/class.base.php (<span class="corefile">a core file</span>) to your Zen Cart's /includes/classes/class.base.php.</li>
+    <li>Compare the <span class="corefile">/includes/modules/pages/login/header_php.php</span> file included with this plugin with the one currently being used at your store. This plugin's version of that file is <em>slightly modified</em> from that shipped with Zen Cart v1.5.3, providing conditional checking of functions introduced in v1.5.3 for previous Zen Cart versions.  If you have made modifications to your current copy of this file, merge those modifications; otherwise, you'll use the version of the file from this plugin.</li>
+  </ol></li>
   <li>Compare the plugin's <strong>/YOUR_ADMIN/customers.php</strong> with the one currently being used at your store.  This plugin's changes (1 block) are surrounded by comments that contain the string <em>EMP login link</em>.  If you have made modifications to your current copy of this file, simply copy the block of changes to your previously-modified copy; otherwise, you'll use the version of the file from this plugin.</li>
-  <li>Compare the plugin's <strong>/YOUR_ADMIN/orders.php</strong> with the one currently being used at your store.  This plugin's changes (1 block) are surrounded by comments that contain the string <em>osh_updated_by</em> and primarily comment-out processing that is now performed by /includes/functions/extra_functions/osh_updated_by_functions.php.</li>
+  <li>Compare the plugin's <strong>/YOUR_ADMIN/orders.php</strong> with the one currently being used at your store.  This plugin's changes (4 blocks) are surrounded by comments that contain the string <em>osh_updated_by</em> and primarily comment-out processing that is now performed by /includes/functions/extra_functions/osh_updated_by_functions.php.</li>
   <li>Rename /YOUR_ADMIN to match the name of your Zen Cart admin directory.</li>
-  <li>Upload the plugin's files to your store's file system:<ol class="minspacing">
+  <li>Upload the plugin's files to your store's file system:<ol class="minspacing" type="a">
     <li><span class="corefile">/YOUR_ADMIN/customers.php</span></li>
     <li><span class="corefile">/YOUR_ADMIN/orders.php</span><span class="osh">, part of the "Common Orders-Status Update" interface</span></li>
     <li>/YOUR_ADMIN/includes/functions/extra_functions/init_emp_configuration.php</li>
@@ -87,9 +91,9 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
     <li><span class="osh">/YOUR_ADMIN/includes/languages/english/osh_updated_by.php</span></li>
     <li>/YOUR_ADMIN/includes/languages/english/images/buttons/button_placeorder.gif</li>
     <li>/includes/auto_loaders/config.emp_login_link.php</li>
-    <li>/includes/init_includes/init_emp_login_link.php</li>
+    <li>/includes/classes/observers/class.emp_order_observer.php</li>
+    <li><span class="removed">/includes/init_includes/init_emp_login_link.php</span>.  Removed in v2.0.0 of this plugin.</li>
     <li><span class="osh">/includes/functions/extra_functions/osh_updated_by_functions.php</span></li>
-    <li class="corefile">/includes/modules/pages/login/header_php.php</li>
   </ol></li>
   <li>Sign into your admin-console or, if you are already signed in, click the <em>Admin Home</em> link at the top of the page.  Navigate to <em>Configuration-&gt;My Store</em> and you'll see the two new configuration values for the EMP plugin.</li>
 </ol>
@@ -143,9 +147,14 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
       <li>A minor update to the <span class="corefile">core-file</span> change to /includes/modules/pages/login/header_php.php.</li>
     </ol></li>
   </ul></li>
-  <li>v2.0.0, 2014-05-xx (lat9):<ul>
-    <li><em>Conditionally</em> incorporate changes introduced in Zen Cart v1.5.3.  Changed:<ol>
-      <li><span class="corefile">/includes/modules/pages/login/header_php.php</span></li>
+  <li>v2.0.0, 2014-07-05 (lat9):<ul>
+    <li><em>Conditionally</em> incorporate changes introduced in Zen Cart v1.5.3 to support the improved password handling and to address PCI concerns.  Changed:<ol>
+      <li><span class="corefile">/YOUR_ADMIN/customers.php</span></li>
+      <li>/includes/auto-loaders/config.emp_login_link.php</li>
+      <li><span class="corefile">/includes/classes.class.base.php</span>.  This file is required <em>only</em> for pre-Zen Cart v1.5.3 installations, present in the plugin's <b>/before_zc153</b> folder.</li>
+      <li>/includes/classes/observers/class.emp_order_observer.php</li>
+      <li><span class="removed">/includes/init_includes/init_emp_login_link.php</span>.  File now contains only comments and can be safely removed from your installation.</li>
+      <li><span class="corefile">/includes/modules/pages/login/header_php.php</span>.  This file is required <em>only</em> for pre-Zen Cart v1.5.3 installations, present in the plugin's <b>/before_zc153</b> folder.</li>
     </ol></li>
   </ul></li>
 </ul>

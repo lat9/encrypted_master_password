@@ -1205,17 +1205,16 @@ if (($_GET['page'] == '' or $_GET['page'] == '1') and $_GET['cID'] != '') {
 
         $contents[] = array('align' => 'center', 'text' => '<a href="' . zen_href_link(FILENAME_CUSTOMERS, zen_get_all_get_params(array('cID', 'action', 'search')) . 'cID=' . $cInfo->customers_id . '&action=edit', 'NONSSL') . '">' . zen_image_button('button_edit.gif', IMAGE_EDIT) . '</a> <a href="' . zen_href_link(FILENAME_CUSTOMERS, zen_get_all_get_params(array('cID', 'action', 'search')) . 'cID=' . $cInfo->customers_id . '&action=confirm', 'NONSSL') . '">' . zen_image_button('button_delete.gif', IMAGE_DELETE) . '</a><br />' . ($customers_orders->RecordCount() != 0 ? '<a href="' . zen_href_link(FILENAME_ORDERS, 'cID=' . $cInfo->customers_id, 'NONSSL') . '">' . zen_image_button('button_orders.gif', IMAGE_ORDERS) . '</a>' : '') . ' <a href="' . zen_href_link(FILENAME_MAIL, 'origin=customers.php&mode=NONSSL&selected_box=tools&customer=' . $cInfo->customers_email_address.'&cID=' . $cInfo->customers_id, 'NONSSL') . '">' . zen_image_button('button_email.gif', IMAGE_EMAIL) . '</a>');
         
-//-bof-a-EMP login link 1/1
-        $emp_sql = 'SELECT admin_profile, admin_pass from ' . TABLE_ADMIN . ' WHERE admin_id = :adminId:'; /*v1.7.0c*/
+//-bof-a-EMP login link  *** 1 of 1 ***
+        $emp_sql = 'SELECT admin_profile, admin_pass from ' . TABLE_ADMIN . ' WHERE admin_id = :adminId: AND admin_profile IN (' . EMP_LOGIN_ADMIN_PROFILE_ID . ')';
         $emp_sql = $db->bindVars($emp_sql, ':adminId:', $_SESSION['admin_id'], 'integer');
         $emp_result = $db->Execute($emp_sql);
 
-        if (!$emp_result->EOF && ($_SESSION['admin_id'] == EMP_LOGIN_ADMIN_ID || $emp_result->fields['admin_profile'] == EMP_LOGIN_ADMIN_PROFILE_ID) ) {  /*v1.7.0c*/
-          $hash = md5($cInfo->customers_email_address . $cInfo->customers_id . $_SESSION['admin_id'] . $emp_result->fields['admin_pass']);  /*v1.7.0a*/
-          $contents[] = array('align' => 'center', 'text' => '<div align="center"><form target="_blank" name="login" action="' . zen_catalog_href_link(FILENAME_LOGIN, 'action=process', 'SSL') . '" method="post">' . zen_draw_hidden_field('email_address', $cInfo->customers_email_address) /*-bof-a-v1.7.0*/ . zen_draw_hidden_field('cID', $cInfo->customers_id) . zen_draw_hidden_field('aID', $_SESSION['admin_id']) . zen_draw_hidden_field('keyValue', $hash) /*-eof-a-v1.7.0*/ . zen_image_submit('button_placeorder.gif', EMP_BUTTON_PLACEORDER_ALT) . '</form></div>');
+        if (!$emp_result->EOF && ( $_SESSION['admin_id'] == EMP_LOGIN_ADMIN_ID || in_array ($emp_result->fields['admin_profile'], explode (',', EMP_LOGIN_ADMIN_PROFILE_ID)) )) {
+          $contents[] = array('align' => 'center', 'text' => '<div align="center"><form target="_blank" name="login" action="' . zen_catalog_href_link(FILENAME_LOGIN, '', 'SSL') . '" method="post">' . zen_draw_hidden_field('email_address', $cInfo->customers_email_address) . zen_image_submit('button_placeorder.gif', EMP_BUTTON_PLACEORDER_ALT) . '</form></div>');
           
         }
-//-eof-a-EMP login link 1/1
+//-eof-a-EMP login link *** 1 of 1 ***
 
         $contents[] = array('text' => '<br />' . TEXT_DATE_ACCOUNT_CREATED . ' ' . zen_date_short($cInfo->date_account_created));
         $contents[] = array('text' => '<br />' . TEXT_DATE_ACCOUNT_LAST_MODIFIED . ' ' . zen_date_short($cInfo->date_account_last_modified));

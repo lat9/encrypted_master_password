@@ -2,17 +2,14 @@
 // -----
 // Part of the Encrypted Master Password plugin, provided by lat9@vinosdefrutastropicales.com
 //
+// Copyright (C) 2013-2014, Vinos de Frutas Tropicales
+//
 // @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
 //
 if (!defined('IS_ADMIN_FLAG')) {
  die('Illegal Access');
 }
-/*
-** point 71 is after the session is established.
-*/
-  $autoLoadConfig[71][] = array('autoType' => 'init_script',
-                                'loadFile' => 'init_emp_login_link.php');
-                                
+                    
 /*
 ** Point 200 is after all other initialization is complete.
 */
