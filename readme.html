@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Encrypted Master Password (Zen-Cart 1.5.0, 1.5.1, 1.5.2, 1.5.3)</title>
+<title>Encrypted Master Password (Zen-Cart v1.5.0 to v1.5.4)</title>
 
 <style type="text/css">
 <!--
@@ -38,8 +38,8 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
 
 <body>
 <a name="top" id="top"></a>
-<h1>Encrypted Master Password for Zen Cart 1.5.0, 1.5.1, 1.5.2, 1.5.3</h1>
-<h3>Version 2.0.0 by lat9</h3>
+<h1>Encrypted Master Password for Zen Cart v1.5.0 to v1.5.4</h1>
+<h3>Version 2.0.1 by lat9</h3>
 <p>Current Support Thread at Zen Cart Forums: <a href="www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support">www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support</a></p>
 <h3>Usage Notes</h3>
 <ol>
@@ -85,8 +85,10 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
   <li>Upload the plugin's files to your store's file system:<ol class="minspacing" type="a">
     <li><span class="corefile">/YOUR_ADMIN/customers.php</span></li>
     <li><span class="corefile">/YOUR_ADMIN/orders.php</span><span class="osh">, part of the "Common Orders-Status Update" interface</span></li>
+    <li>/YOUR_ADMIN/includes/auto_loaders/config.zc154_compatibility.php</li>
     <li>/YOUR_ADMIN/includes/functions/extra_functions/init_emp_configuration.php</li>
     <li><span class="osh">/YOUR_ADMIN/includes/functions/extra_functions/osh_updated_by_admin_functions.php</span></li>
+    <li>/YOUR_ADMIN/includes/init_includes/init_zc154_compatibility.php</li>
     <li>/YOUR_ADMIN/includes/languages/english/extra_definitions/emp_button_definitions.php</li>
     <li><span class="osh">/YOUR_ADMIN/includes/languages/english/osh_updated_by.php</span></li>
     <li>/YOUR_ADMIN/includes/languages/english/images/buttons/button_placeorder.gif</li>
@@ -155,6 +157,14 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
       <li>/includes/classes/observers/class.emp_order_observer.php</li>
       <li><span class="removed">/includes/init_includes/init_emp_login_link.php</span>.  File now contains only comments and can be safely removed from your installation.</li>
       <li><span class="corefile">/includes/modules/pages/login/header_php.php</span>.  This file is required <em>only</em> for pre-Zen Cart v1.5.3 installations, present in the plugin's <b>/before_zc153</b> folder.</li>
+    </ol></li>
+  </ul></li>
+  <li>v2.0.1, 2014-12-20 (lat9):<ul>
+    <li>Use Zen Cart v1.5.4 as the core-file overwrite code basis.  Changed/<span class="added">added</span>:<ol>
+      <li><span class="corefile">/YOUR_ADMIN/customers.php</span></li>
+      <li><span class="corefile">/YOUR_ADMIN/orders.php</span></li>
+      <li><span class="added">/YOUR_ADMIN/includes/auto_loaders/config.zc154_compatibility.php</span></li>
+      <li><span class="added">/YOUR_ADMIN/includes/init_includes/init_zc154_compatibility.php</span></li>
     </ol></li>
   </ul></li>
 </ul>
