@@ -39,11 +39,11 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
 <body>
 <a name="top" id="top"></a>
 <h1>Encrypted Master Password for Zen Cart v1.5.0 to v1.5.4</h1>
-<h3>Version 2.0.1 by lat9</h3>
+<h3>Version 2.0.2 by lat9</h3>
 <p>Current Support Thread at Zen Cart Forums: <a href="www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support">www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support</a></p>
 <h3>Usage Notes</h3>
 <ol>
-  <li>Version 1.8.0 (and later) of this plugin includes v1.1.0 of the "Common Orders-Status Update Interface", available <a href="http://www.zen-cart.com/downloads.php?do=file&id=1839" target="_blank">here</a>.  Please make sure that you've subscribed to the current support forum for <em>Encrypted Master Password</em>; I'll post there if there's an interface update required.</a>
+  <li>Version 1.8.0 (and later) of this plugin includes the "Common Orders-Status Update Interface", available <a href="http://www.zen-cart.com/downloads.php?do=file&id=1839" target="_blank">here</a>.  Please make sure that you've subscribed to the current support forum for <em>Encrypted Master Password</em>; I'll post there if there's an interface update required.</a>
 </ol>
 
 <hr />
@@ -165,6 +165,11 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
       <li><span class="corefile">/YOUR_ADMIN/orders.php</span></li>
       <li><span class="added">/YOUR_ADMIN/includes/auto_loaders/config.zc154_compatibility.php</span></li>
       <li><span class="added">/YOUR_ADMIN/includes/init_includes/init_zc154_compatibility.php</span></li>
+    </ol></li>
+  </ul></li>
+  <li>v2.0.2, 2015-05-28 (lat9):<ul>
+    <li>Update orders-status-history processing to properly convert CRLF characters in the status-update message.  Changed:<ol>
+      <li>/includes/functions/extra_functions/osh_updated_by_functions.php</li>
     </ol></li>
   </ul></li>
 </ul>
