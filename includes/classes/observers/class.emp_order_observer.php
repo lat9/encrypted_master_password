@@ -2,13 +2,13 @@
 // -----
 // Part of the Encrypted Master Password plugin, provided by lat9@vinosdefrutastropicales.com
 //
-// Copyright (C) 2013-2014 Vinos de Frutas Tropicales
+// Copyright (C) 2013-2015 Vinos de Frutas Tropicales
 //
 // @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
 //
 // -----
 // When entered via the "Place Order" button from the admin, the customer's email address is posted but somehow (on PHP 5.4)
-// doesn't get recorded in the $GLOBALS array (which is where the default input field values are gathered.
+// doesn't get recorded in the $GLOBALS array (which is where the default input field values are gathered).
 //
 if (isset ($_POST['email_address'])) {
   $GLOBALS['email_address'] = $_POST['email_address'];
@@ -17,7 +17,7 @@ if (isset ($_POST['email_address'])) {
 
 class emp_order_observer extends base {
 
-  function emp_order_observer() {
+  function __construct () {
     $this->attach ($this, array ('NOTIFY_ORDER_DURING_CREATE_ADDED_ORDER_COMMENT', 'NOTIFY_PROCESS_3RD_PARTY_LOGINS'));
     
   }

@@ -39,7 +39,7 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
 <body>
 <a name="top" id="top"></a>
 <h1>Encrypted Master Password for Zen Cart v1.5.0 to v1.5.4</h1>
-<h3>Version 2.0.2 by lat9</h3>
+<h3>Version 2.0.3 by lat9</h3>
 <p>Current Support Thread at Zen Cart Forums: <a href="www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support">www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support</a></p>
 <h3>Usage Notes</h3>
 <ol>
@@ -170,6 +170,11 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
   <li>v2.0.2, 2015-05-28 (lat9):<ul>
     <li>Update orders-status-history processing to properly convert CRLF characters in the status-update message.  Changed:<ol>
       <li>/includes/functions/extra_functions/osh_updated_by_functions.php</li>
+    </ol></li>
+  </ul></li>
+  <li>v2.0.3, 2015-10-xx (lat9):<ul>
+    <li>Change all class constructor function names to __construct (PHP 7 compliance).  Changed:<ol>
+      <li>/includes/classes/observers/class.emp_order_observer.php</li>
     </ol></li>
   </ul></li>
 </ul>
