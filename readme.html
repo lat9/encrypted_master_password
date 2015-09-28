@@ -14,7 +14,6 @@ h1 { font-size: 20px; }
 h2 { font-size: 16px; background-color: #bcbcbc; padding: 10px; }
 h3 { font-size: 14px; background-color: #dcdcdc; padding: 5px; }
 h4 { font-size: 12px; border-top: 1px solid #ababab; }
-code { padding-left: 25px; }
 dt { font-weight: bold; margin-bottom: 0; }
 dd { margin-top: 0; padding-left: 40px; }
 img { margin: 0 20px; }
@@ -32,6 +31,7 @@ td.version { vertical-align: middle; font-weight: bold; font-size: larger; }
 td.none { font-weight: bold; text-align: center; padding-top: 10px; }
 .odd { background-color: #ebebeb; }
 .osh { color: darkcyan; }
+.smaller { font-size: smaller; }
 -->
 </style>
 </head>
@@ -39,7 +39,7 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
 <body>
 <a name="top" id="top"></a>
 <h1>Encrypted Master Password for Zen Cart v1.5.0 to v1.5.4</h1>
-<h3>Version 2.0.3 by lat9</h3>
+<h3>Version 2.1.0 by lat9</h3>
 <p>Current Support Thread at Zen Cart Forums: <a href="www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support">www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support</a></p>
 <h3>Usage Notes</h3>
 <ol>
@@ -70,6 +70,7 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
   <li>$_SESSION['emp_admin_id'] is set to the <em>admin_id</em> of the currently signed-in admin</li>
 </ol>
 <p>In addition, an entry is written to the <b>admin_activity_log</b> to record the event.  If an order is placed by the <em>EMP</em> admin on the customer's behalf, the <b>updated_by</b> field in the order's status history is set to identify the admin that placed the order.</p>
+<p>Starting with v2.1.0 of this plugin, a signed-in EMP admin can also change the customer's password on their behalf.  The admin navigates to the <code>account_password</code> page, enters <em>their admin password</em> as the current password and the customer's new password in the other two fields.  Upon successful change, an <b>admin_activity_log</b> record is written to record that event.</p>
 
 <hr />
 <h2>Installation</h2>
@@ -96,6 +97,7 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
     <li>/includes/classes/observers/class.emp_order_observer.php</li>
     <li><span class="removed">/includes/init_includes/init_emp_login_link.php</span>.  Removed in v2.0.0 of this plugin.</li>
     <li><span class="osh">/includes/functions/extra_functions/osh_updated_by_functions.php</span></li>
+    <li><span class="corefile">/includes/modules/pages/account_password/header_php.php</span> <span class="smaller">(Added in v2.1.0)</span></li>
   </ol></li>
   <li>Sign into your admin-console or, if you are already signed in, click the <em>Admin Home</em> link at the top of the page.  Navigate to <em>Configuration-&gt;My Store</em> and you'll see the two new configuration values for the EMP plugin.</li>
 </ol>
@@ -172,9 +174,11 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
       <li>/includes/functions/extra_functions/osh_updated_by_functions.php</li>
     </ol></li>
   </ul></li>
-  <li>v2.0.3, 2015-10-xx (lat9):<ul>
-    <li>Change all class constructor function names to __construct (PHP 7 compliance).  Changed:<ol>
+  <li>v2.1.0, 2015-09-28 (lat9):<ul>
+    <li>Update the plugin's processing, enabling a signed-in EMP admin to change the associated customer's password.</li>
+    <li>Change all class constructor function names to __construct (PHP 7 compliance). Changed/<span class="added">added</span>:<ol>
       <li>/includes/classes/observers/class.emp_order_observer.php</li>
+      <li><span class="corefile">/includes/modules/pages/account_password/header_php.php</span> <span class="smaller added">(Added)</span></li>
     </ol></li>
   </ul></li>
 </ul>
