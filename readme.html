@@ -1,8 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Encrypted Master Password (Zen-Cart v1.5.0 to v1.5.4)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Encrypted Master Password (Zen-Cart v1.5.0 to v1.5.5)</title>
 
 <style type="text/css">
 <!--
@@ -38,8 +39,8 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
 
 <body>
 <a name="top" id="top"></a>
-<h1>Encrypted Master Password for Zen Cart v1.5.0 to v1.5.4</h1>
-<h3>Version 2.1.0 by lat9</h3>
+<h1>Encrypted Master Password for Zen Cart v1.5.0 to v1.5.5</h1>
+<h3>Version 2.1.1 by lat9</h3>
 <p>Current Support Thread at Zen Cart Forums: <a href="www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support">www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support</a></p>
 <h3>Usage Notes</h3>
 <ol>
@@ -70,15 +71,23 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
   <li>$_SESSION['emp_admin_id'] is set to the <em>admin_id</em> of the currently signed-in admin</li>
 </ol>
 <p>In addition, an entry is written to the <b>admin_activity_log</b> to record the event.  If an order is placed by the <em>EMP</em> admin on the customer's behalf, the <b>updated_by</b> field in the order's status history is set to identify the admin that placed the order.</p>
-<p>Starting with v2.1.0 of this plugin, a signed-in EMP admin can also change the customer's password on their behalf.  The admin navigates to the <code>account_password</code> page, enters <em>their admin password</em> as the current password and the customer's new password in the other two fields.  Upon successful change, an <b>admin_activity_log</b> record is written to record that event.</p>
+<p>Starting with v2.1.0 of this plugin, a signed-in EMP admin can also change the customer's password on their behalf.</p>
+<ul>
+  <li>For v2.1.0, the admin navigates to the <code>account_password</code> page, enters <em>their admin password</em> as the current password and the customer's new password in the other two fields.  Upon successful change, an <b>admin_activity_log</b> record is written to record that event.</li>
+  <li>For v2.1.1, the Zen Cart v1.5.5 base provides this functionality.  Navigate to your admin's <em>Customers-&gt;Customers</em> and you'll see a <strong>Reset PW</strong> button for the currently-selected customer, which you can use to change that customer's password directly from your admin-console.
+</ul>
 
 <hr />
-<h2>Installation</h2>
+<h2>Installing and Upgrading</h2>
 <p>There are <span class="corefile">core-file overwrites</span> in this plugin; you should <strong>always</strong> backup your cart&rsquo;s database and files prior to making any changes.  The files identified using <span class="osh">this</span> color are part of the "Common Orders-Status Update" interface and are subject to separate change!</p>
 <ol>
-  <li>If you are currently running Zen Cart v1.5.0 through v1.5.2<ol type="a">
+  <li><strong>If you are currently running Zen Cart v1.5.0 through v1.5.2:</strong><ol type="a">
     <li>Copy the plugin's /before_zc153/includes/classes/class.base.php (<span class="corefile">a core file</span>) to your Zen Cart's /includes/classes/class.base.php.</li>
-    <li>Compare the <span class="corefile">/includes/modules/pages/login/header_php.php</span> file included with this plugin with the one currently being used at your store. This plugin's version of that file is <em>slightly modified</em> from that shipped with Zen Cart v1.5.3, providing conditional checking of functions introduced in v1.5.3 for previous Zen Cart versions.  If you have made modifications to your current copy of this file, merge those modifications; otherwise, you'll use the version of the file from this plugin.</li>
+    <li>Compare the <span class="corefile">/before_zc153/includes/modules/pages/login/header_php.php</span> file included with this plugin with the one currently being used at your store. This plugin's version of that file is <em>slightly modified</em> from that shipped with Zen Cart v1.5.3, providing conditional checking of functions introduced in v1.5.3 for previous Zen Cart versions.  If you have made modifications to your current copy of this file, merge those modifications; otherwise, you'll use the version of the file from this plugin.</li>
+  </ol></li>
+  <li><strong>If you are upgrading from <em>Encrypted Master Password</em> v2.1.0:</strong><ol type="a">
+    <li>The ability to change a customer's password from <em>the customer's account</em>, introduced in <em>EMP</em> v2.1.0, has been replaced by a similar feature introduced in Zen Cart v1.5.5 admin's <em>Customers-&gt;Customers</em> handling.  That functionality, included in <em>EMP</em> v2.1.1 and later, enables a Zen Cart admin to change a customer's password using that admin-level page.</li>
+    <li>As such, this plugin's change to /includes/modules/pages/account_password/header_php.php <em>is no longer required (or wanted)</em>.  When you upgrade from <em>EMP</em> v2.1.0, you'll need to back-out the changes introduced to that file &mdash; most likely a simple replacement of your current Zen Cart's version of that <span class="corefile">core-file</span>.</li>
   </ol></li>
   <li>Compare the plugin's <strong>/YOUR_ADMIN/customers.php</strong> with the one currently being used at your store.  This plugin's changes (1 block) are surrounded by comments that contain the string <em>EMP login link</em>.  If you have made modifications to your current copy of this file, simply copy the block of changes to your previously-modified copy; otherwise, you'll use the version of the file from this plugin.</li>
   <li>Compare the plugin's <strong>/YOUR_ADMIN/orders.php</strong> with the one currently being used at your store.  This plugin's changes (4 blocks) are surrounded by comments that contain the string <em>osh_updated_by</em> and primarily comment-out processing that is now performed by /includes/functions/extra_functions/osh_updated_by_functions.php.</li>
@@ -90,6 +99,7 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
     <li>/YOUR_ADMIN/includes/functions/extra_functions/init_emp_configuration.php</li>
     <li><span class="osh">/YOUR_ADMIN/includes/functions/extra_functions/osh_updated_by_admin_functions.php</span></li>
     <li>/YOUR_ADMIN/includes/init_includes/init_zc154_compatibility.php</li>
+    <li><span class="corefile">/YOUR_ADMIN/includes/languages/english/customers.php</span> <span class="smaller">(Added in v2.1.1, this is the Zen Cart v1.5.5 version of the file)</span></li>
     <li>/YOUR_ADMIN/includes/languages/english/extra_definitions/emp_button_definitions.php</li>
     <li><span class="osh">/YOUR_ADMIN/includes/languages/english/osh_updated_by.php</span></li>
     <li>/YOUR_ADMIN/includes/languages/english/images/buttons/button_placeorder.gif</li>
@@ -97,7 +107,7 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
     <li>/includes/classes/observers/class.emp_order_observer.php</li>
     <li><span class="removed">/includes/init_includes/init_emp_login_link.php</span>.  Removed in v2.0.0 of this plugin.</li>
     <li><span class="osh">/includes/functions/extra_functions/osh_updated_by_functions.php</span></li>
-    <li><span class="corefile">/includes/modules/pages/account_password/header_php.php</span> <span class="smaller">(Added in v2.1.0)</span></li>
+    <li><span class="removed"><span class="corefile">/includes/modules/pages/account_password/header_php.php</span> <span class="smaller">(Added in v2.1.0)</span></span> <span class="smaller">(Removed in v2.1.1)</span></li>
   </ol></li>
   <li>Sign into your admin-console or, if you are already signed in, click the <em>Admin Home</em> link at the top of the page.  Navigate to <em>Configuration-&gt;My Store</em> and you'll see the two new configuration values for the EMP plugin.</li>
 </ol>
@@ -179,6 +189,17 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
     <li>Change all class constructor function names to __construct (PHP 7 compliance). Changed/<span class="added">added</span>:<ol>
       <li>/includes/classes/observers/class.emp_order_observer.php</li>
       <li><span class="corefile">/includes/modules/pages/account_password/header_php.php</span> <span class="smaller added">(Added)</span></li>
+    </ol></li>
+  </ul></li>
+  <li>v2.1.1, 2015-12-xx (lat9):<ul>
+    <li>Use Zen Cart v1.5.5 as the core-file overwrite change-basis.</li>
+    <li>The following files were changed/<span class="added">added</span>/<span class="removed">removed</span>:<ol>
+      <li><span class="corefile">/before_zc153/includes/modules/pages/login/header_php.php</span></li>
+      <li>/includes/classes/observers/class.emp_order_observer.php</li>
+      <li><span class="removed"><span class="corefile">/includes/modules/pages/account_password/header_php.php</span></span> <span class="smaller">(Removed from this distribution, <em>only</em>!)</li>
+      <li><span class="corefile">/YOUR_ADMIN/customers.php</span></li>
+      <li><span class="corefile">/YOUR_ADMIN/orders.php</span></li>
+      <li><span class="corefile">/YOUR_ADMIN/includes/languages/english/customers.php</span> <span class="smaller added">(Added)</span></li>
     </ol></li>
   </ul></li>
 </ul>

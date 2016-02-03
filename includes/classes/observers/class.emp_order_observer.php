@@ -18,7 +18,7 @@ if (isset ($_POST['email_address'])) {
 class emp_order_observer extends base {
 
   function __construct () {
-    $this->attach ($this, array ('NOTIFY_ORDER_DURING_CREATE_ADDED_ORDER_COMMENT', 'NOTIFY_PROCESS_3RD_PARTY_LOGINS', 'NOTIFY_ACCOUNT_PASSWORD_VALIDATE_EXISTING'));
+    $this->attach ($this, array ('NOTIFY_ORDER_DURING_CREATE_ADDED_ORDER_COMMENT', 'NOTIFY_PROCESS_3RD_PARTY_LOGINS');
     
   }
   
@@ -98,33 +98,7 @@ class emp_order_observer extends base {
         break;
         
       }
-      // -----
-      // Issued by the account_password page's header_php.php, just prior to validating the customer's password:
-      // - $p1a ... contains the unencrypted version of the customer's current password.
-      // - $p2 .... contains a (writable) boolean flag; set that value to true by this processing if the password matches a logged-in EMP admin's
-      //
-      case 'NOTIFY_ACCOUNT_PASSWORD_VALIDATE_EXISTING': {
 
-        if (isset ($_SESSION['emp_admin_login']) && $_SESSION['emp_admin_login'] === true) {
-          $check = $db->Execute ("SELECT admin_id, admin_pass FROM " . TABLE_ADMIN . " WHERE admin_id = " . (int)$_SESSION['emp_admin_id'] . " LIMIT 1");
-          $p2 = (!$check->EOF && zen_validate_password ($p1a, $check->fields['admin_pass']));
-          if ($p2) {
-            $sql_data_array = array ( 'access_date' => 'now()',
-              'admin_id' => $_SESSION['emp_admin_id'],
-              'page_accessed' => 'account_password.php',
-              'page_parameters' => '',
-              'ip_address' => substr ($_SERVER['REMOTE_ADDR'],0,45),
-              'gzpost' => gzdeflate (json_encode (array ( 'action' => 'emp_admin_change_customer_pw' )), 7),
-              'flagged' => 0,
-              'attention' => '',
-            );
-            zen_db_perform (TABLE_ADMIN_ACTIVITY_LOG, $sql_data_array);
-            
-          }          
-        }
-        break;
-        
-      }
       default: {
         break;
         
