@@ -31,7 +31,7 @@ td { vertical-align: top; padding: 5px; border-top: 1px solid #404040; }
 td.version { vertical-align: middle; font-weight: bold; font-size: larger; }
 td.none { font-weight: bold; text-align: center; padding-top: 10px; }
 .odd { background-color: #ebebeb; }
-.osh { color: darkcyan; }
+.osh { }
 .smaller { font-size: smaller; }
 -->
 </style>
@@ -40,8 +40,8 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
 <body>
 <a name="top" id="top"></a>
 <h1>Encrypted Master Password for Zen Cart v1.5.0 to v1.5.5</h1>
-<h3>Version 2.1.1 by lat9</h3>
-<p>Current Support Thread at Zen Cart Forums: <a href="www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support">www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support</a></p>
+<h3>Version 2.1.1 by lat9. <span class="smaller">Copyright &copy; 2013-2016, <a href="http://vinosdefrutastropicales.com" target="_blank">Vinos de Frutas Tropicales</a></span></h3>
+<p>Current Support Thread at Zen Cart Forums: <a href="www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support" target="_blank">www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support</a></p>
 <h3>Usage Notes</h3>
 <ol>
   <li>Version 1.8.0 (and later) of this plugin includes the "Common Orders-Status Update Interface", available <a href="http://www.zen-cart.com/downloads.php?do=file&id=1839" target="_blank">here</a>.  Please make sure that you've subscribed to the current support forum for <em>Encrypted Master Password</em>; I'll post there if there's an interface update required.</a>
@@ -99,6 +99,10 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
     <li>/YOUR_ADMIN/includes/functions/extra_functions/init_emp_configuration.php</li>
     <li><span class="osh">/YOUR_ADMIN/includes/functions/extra_functions/osh_updated_by_admin_functions.php</span></li>
     <li>/YOUR_ADMIN/includes/init_includes/init_zc154_compatibility.php</li>
+    <li><span class="corefile">/YOUR_ADMIN/includes/languages/english/customers.php</span> <span class="smaller">(Added in v2.1.1, this is the Zen Cart v1.5.5 <em>English</em> version of the file)</span></li>
+    <li>/YOUR_ADMIN/includes/languages/dutch/extra_definitions/emp_button_definitions.php <span class="smaller">(Added in v2.1.1)</span></li>
+    <li><span class="osh">/YOUR_ADMIN/includes/languages/dutch/osh_updated_by.php</span> <span class="smaller">(Added in v2.1.1)</span></li>
+    <li>/YOUR_ADMIN/includes/languages/dutch/images/buttons/button_placeorder.gif <span class="smaller">(Added in v2.1.1)</span></li>
     <li><span class="corefile">/YOUR_ADMIN/includes/languages/english/customers.php</span> <span class="smaller">(Added in v2.1.1, this is the Zen Cart v1.5.5 version of the file)</span></li>
     <li>/YOUR_ADMIN/includes/languages/english/extra_definitions/emp_button_definitions.php</li>
     <li><span class="osh">/YOUR_ADMIN/includes/languages/english/osh_updated_by.php</span></li>
@@ -191,14 +195,19 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
       <li><span class="corefile">/includes/modules/pages/account_password/header_php.php</span> <span class="smaller added">(Added)</span></li>
     </ol></li>
   </ul></li>
-  <li>v2.1.1, 2015-12-xx (lat9):<ul>
-    <li>Use Zen Cart v1.5.5 as the core-file overwrite change-basis.</li>
+  <li>v2.1.1, 2016-02-xx (lat9):<ul>
+    <li>CHANGE: Use Zen Cart v1.5.5 as the core-file overwrite change-basis.</li>
+    <li>CHANGE: Updated to include the Dutch translations, provided by @Xray2000.</li>
     <li>The following files were changed/<span class="added">added</span>/<span class="removed">removed</span>:<ol>
       <li><span class="corefile">/before_zc153/includes/modules/pages/login/header_php.php</span></li>
       <li>/includes/classes/observers/class.emp_order_observer.php</li>
       <li><span class="removed"><span class="corefile">/includes/modules/pages/account_password/header_php.php</span></span> <span class="smaller">(Removed from this distribution, <em>only</em>!)</li>
       <li><span class="corefile">/YOUR_ADMIN/customers.php</span></li>
       <li><span class="corefile">/YOUR_ADMIN/orders.php</span></li>
+      <li><span class="corefile">/YOUR_ADMIN/includes/languages/dutch/customers.php</span> <span class="smaller added">(Added)</span></li>
+      <li><span class="added">/YOUR_ADMIN/includes/languages/dutch/extra_definitions/emp_button_definitions.php</span></li>
+      <li><span class="added">/YOUR_ADMIN/includes/languages/dutch/osh_updated_by.php</span></li>
+      <li><span class="added">/YOUR_ADMIN/includes/languages/dutch/images/buttons/button_placeorder.gif</span></li>
       <li><span class="corefile">/YOUR_ADMIN/includes/languages/english/customers.php</span> <span class="smaller added">(Added)</span></li>
     </ol></li>
   </ul></li>
