@@ -2,7 +2,7 @@
 // -----
 // Part of the Encrypted Master Password plugin, provided by lat9@vinosdefrutastropicales.com
 //
-// Copyright (C) 2013-2015 Vinos de Frutas Tropicales
+// Copyright (C) 2013-2016 Vinos de Frutas Tropicales
 //
 // @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
 //
@@ -18,7 +18,7 @@ if (isset ($_POST['email_address'])) {
 class emp_order_observer extends base {
 
   function __construct () {
-    $this->attach ($this, array ('NOTIFY_ORDER_DURING_CREATE_ADDED_ORDER_COMMENT', 'NOTIFY_PROCESS_3RD_PARTY_LOGINS');
+    $this->attach ($this, array ('NOTIFY_ORDER_DURING_CREATE_ADDED_ORDER_COMMENT', 'NOTIFY_PROCESS_3RD_PARTY_LOGINS') );
     
   }
   
