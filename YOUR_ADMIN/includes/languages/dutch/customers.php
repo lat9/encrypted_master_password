@@ -1,69 +1,70 @@
 <?php
 /**
- * @package admin
- * @copyright Copyright 2003-2014 Zen Cart Development Team
+ * @package admin languageDefines Dutch Zen Cart Version 1.5.5
+ * @ Maintained by Zen4All (http://zen4all.nl)
+ * @copyright Copyright 2003-2016 Zen Cart Development Team
  * @copyright Portions Copyright 2003 osCommerce
  * @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
- * @version $Id: customers.php 6352 2007-05-20 21:05:01Z drbyte $
+ * @version $Id: Author: DrByte  Sun Oct 18 23:54:03 2015 -0400 Modified in v1.5.5 $
  */
 
-define('HEADING_TITLE', 'Customers');
+define('HEADING_TITLE', 'Klanten');
 
-define('TABLE_HEADING_ID', 'ID#');
-define('TABLE_HEADING_FIRSTNAME', 'First Name');
-define('TABLE_HEADING_LASTNAME', 'Last Name');
-define('TABLE_HEADING_ACCOUNT_CREATED', 'Account Created');
-define('TABLE_HEADING_LOGIN', 'Last Login');
-define('TABLE_HEADING_ACTION', 'Action');
-define('TABLE_HEADING_PRICING_GROUP', 'Pricing Group');
-define('TABLE_HEADING_AUTHORIZATION_APPROVAL', 'Authorized');
-define('TABLE_HEADING_GV_AMOUNT', 'GV Balance');
+define('TABLE_HEADING_ID', 'Klant ID');
+define('TABLE_HEADING_FIRSTNAME', 'Voornaam');
+define('TABLE_HEADING_LASTNAME', 'Achternaam');
+define('TABLE_HEADING_ACCOUNT_CREATED', 'Account toegevoegd');
+define('TABLE_HEADING_LOGIN', 'Laatste inlogdatum');
+define('TABLE_HEADING_ACTION', 'Actie');
+define('TABLE_HEADING_PRICING_GROUP', 'Prijsgroep');
+define('TABLE_HEADING_AUTHORIZATION_APPROVAL', 'Status klant');
+define('TABLE_HEADING_GV_AMOUNT', 'Waardebon saldo');
 
-define('TEXT_DATE_ACCOUNT_CREATED', 'Account Created:');
-define('TEXT_DATE_ACCOUNT_LAST_MODIFIED', 'Last Modified:');
-define('TEXT_INFO_DATE_LAST_LOGON', 'Last Logon:');
-define('TEXT_INFO_NUMBER_OF_LOGONS', 'Number of Logons:');
-define('TEXT_INFO_COUNTRY', 'Country:');
-define('TEXT_INFO_NUMBER_OF_REVIEWS', 'Number of Reviews:');
-define('TEXT_DELETE_INTRO', 'Are you sure you want to delete this customer?');
-define('TEXT_DELETE_REVIEWS', 'Delete %s review(s)');
-define('TEXT_INFO_HEADING_DELETE_CUSTOMER', 'Delete Customer');
-define('TYPE_BELOW', 'Type below');
-define('PLEASE_SELECT', 'Select One');
-define('TEXT_INFO_NUMBER_OF_ORDERS', 'Number of Orders:');
-define('TEXT_INFO_LAST_ORDER','Last Order:');
-define('TEXT_INFO_ORDERS_TOTAL', 'Total:');
-define('CUSTOMERS_REFERRAL', 'Customer Referral<br />1st Discount Coupon');
-define('TEXT_INFO_GV_AMOUNT', 'GV Balance');
+define('TEXT_DATE_ACCOUNT_CREATED', 'Account toegevoegd:');
+define('TEXT_DATE_ACCOUNT_LAST_MODIFIED', 'Datum laatste wijziging:');
+define('TEXT_INFO_DATE_LAST_LOGON', 'Laatste keer aangemeld:');
+define('TEXT_INFO_NUMBER_OF_LOGONS', 'Aantal keer aangemeld:');
+define('TEXT_INFO_COUNTRY', 'Land:');
+define('TEXT_INFO_NUMBER_OF_REVIEWS', 'Aantal recensie(s):');
+define('TEXT_DELETE_INTRO', 'Weet je zeker dat je deze klant wilt verwijderen?');
+define('TEXT_DELETE_REVIEWS', 'Verwijder %s recensie(s)');
+define('TEXT_INFO_HEADING_DELETE_CUSTOMER', 'Verwijder klant');
+define('TYPE_BELOW', 'Type hieronder');
+define('PLEASE_SELECT', 'Selecteer één');
+define('TEXT_INFO_NUMBER_OF_ORDERS', 'Aantal bestellingen:');
+define('TEXT_INFO_LAST_ORDER','Laatste bestelling:');
+define('TEXT_INFO_ORDERS_TOTAL', 'Totaal:');
+define('CUSTOMERS_REFERRAL', 'Klantreferentie<br />1e Kortingsbon');
+define('TEXT_INFO_GV_AMOUNT', 'Waardebon saldo');
 
-define('ENTRY_NONE', 'None');
+define('ENTRY_NONE', 'Geen');
 
-define('TABLE_HEADING_COMPANY','Company');
+define('TABLE_HEADING_COMPANY','Bedrijf');
 
-define('TEXT_INFO_HEADING_RESET_CUSTOMER_PASSWORD', 'Reset Customer Password');
-define('TEXT_PWDRESET_INTRO', 'To reset the password for this customer, enter a new password, and confirm it, below. The new password must conform to the normal password rules imposed on customers.');
-define('TEXT_CUST_NEW_PASSWORD', 'New Password:');
-define('TEXT_CUST_CONFIRM_PASSWORD', 'Confirm Password:');
-define('ERROR_PWD_TOO_SHORT', 'Error: password is shorter than the number of characters configured for this store.');
-define('SUCCESS_PASSWORD_UPDATED', 'Password updated.');
+define('TEXT_INFO_HEADING_RESET_CUSTOMER_PASSWORD', 'Reset klant wachtwoord');
+define('TEXT_PWDRESET_INTRO', 'Om het wachtwoord voor deze klant te resetten, type een nieuw wachtwoord en bevestig het, hieronder. Het nieuwe wachtwoord moet voldeoen aan de normale wachtwoord regels die zijn opgelegd aan de klanten.');
+define('TEXT_CUST_NEW_PASSWORD', 'Nieuw wachtwoord:');
+define('TEXT_CUST_CONFIRM_PASSWORD', 'Bevestig wachtwoord:');
+define('ERROR_PWD_TOO_SHORT', 'Fout: wachtwoord is korter dan het aantal karakters benodigt voor deze winkel.');
+define('SUCCESS_PASSWORD_UPDATED', 'Wachtwoord aangepast.');
 
-define('EMAIL_CUSTOMER_PWD_CHANGE_MESSAGE', 'Your password has been changed by the store administrator. Your new password is: ');
-define('EMAIL_CUSTOMER_PWD_CHANGE_SUBJECT', 'Account password reset');
-define('EMAIL_CUSTOMER_PWD_CHANGE_MESSAGE_FOR_ADMIN', 'You have reset the password for a customer: ' . "\n" . '%s' . "\n\n" . 'Administrator ID: %s');
+define('EMAIL_CUSTOMER_PWD_CHANGE_MESSAGE', 'Uw wachtwoord is aangepast door de administrator van de webwinkel. Uw nieuwe wachtwoord is: ');
+define('EMAIL_CUSTOMER_PWD_CHANGE_SUBJECT', 'Account wachtwoord reset');
+define('EMAIL_CUSTOMER_PWD_CHANGE_MESSAGE_FOR_ADMIN', 'Je hebt het wachtwoord voor een klant aangepast: ' . "\n" . '%s' . "\n\n" . 'Administrator ID: %s');
 
-define('CUSTOMERS_AUTHORIZATION', 'Customers Authorization Status');
-define('CUSTOMERS_AUTHORIZATION_0', 'Approved');
-define('CUSTOMERS_AUTHORIZATION_1', 'Pending Approval - Must be Authorized to Browse');
-define('CUSTOMERS_AUTHORIZATION_2', 'Pending Approval - May Browse No Prices');
-define('CUSTOMERS_AUTHORIZATION_3', 'Pending Approval - May browse with prices but may not buy');
-define('CUSTOMERS_AUTHORIZATION_4', 'Banned - Not allowed to login or shop');
-define('ERROR_CUSTOMER_APPROVAL_CORRECTION1', 'Warning: Your shop is set up for Approval with No Browse. The customer has been set to Pending Approval - No Browse');
-define('ERROR_CUSTOMER_APPROVAL_CORRECTION2', 'Warning: Your shop is set up for Approval with Browse no prices. The customer has been set to Pending Approval - Browse No Prices');
+define('CUSTOMERS_AUTHORIZATION', 'Status toegang klant ');
+define('CUSTOMERS_AUTHORIZATION_0', 'Akkoord');
+define('CUSTOMERS_AUTHORIZATION_1', 'Lopende goedkeuring - moet goedgekeurd zijn om te surfen');
+define('CUSTOMERS_AUTHORIZATION_2', 'Lopende goedkeuring - mag surfen maar geen prijzen zien');
+define('CUSTOMERS_AUTHORIZATION_3', 'Lopende goedkeuring - mag surfen, prijzen zien maar niet afrekenen');
+define('CUSTOMERS_AUTHORIZATION_4', 'Banned - Niet toegestaan om in te loggen of te winkelen');
+define('ERROR_CUSTOMER_APPROVAL_CORRECTION1', 'Waarschuwing: de klant moet eerst goedgekeurd zijn voordat deze mag surfen in je winkel. De klant heeft de status: lopende goedkeuring, mag niet surfen.');
+define('ERROR_CUSTOMER_APPROVAL_CORRECTION2', 'Waarschuwing: de klant moet eerst goedgekeurd zijn voordat deze de prijzen mag zien. De klant heeft de status: lopende goedkeuring, wel surfen geen prijzen zichtbaar.');
 
-define('EMAIL_CUSTOMER_STATUS_CHANGE_MESSAGE', 'Your customer status has been updated. Thank you for shopping with us. We look forward to your business.');
-define('EMAIL_CUSTOMER_STATUS_CHANGE_SUBJECT', 'Customer Status Updated');
+define('EMAIL_CUSTOMER_STATUS_CHANGE_MESSAGE', 'Uw klantstatus is aangepast.');
+define('EMAIL_CUSTOMER_STATUS_CHANGE_SUBJECT', 'Klantstatus aangepast');
 
-define('ADDRESS_BOOK_TITLE', 'Address Book Entries');
-define('PRIMARY_ADDRESS', '(primary address)');
-define('TEXT_MAXIMUM_ENTRIES', '<span class="coming"><strong>NOTE:</strong></span> A maximum of %s address book entries allowed.');
-define('TEXT_INFO_ADDRESS_BOOK_COUNT', ' | 1 of  ');
+define('ADDRESS_BOOK_TITLE', 'Adresboekvermeldingen');
+define('PRIMARY_ADDRESS', '(primair adres)');
+define('TEXT_MAXIMUM_ENTRIES', '<span class="coming"><strong>NOOT:</strong></span> Een maximum van %s adres boek ingevingen zijn toegestaan.');
+define('TEXT_INFO_ADDRESS_BOOK_COUNT', ' | 1 van  ');
