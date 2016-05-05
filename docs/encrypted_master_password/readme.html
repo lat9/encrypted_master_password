@@ -40,7 +40,7 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
 <body>
 <a name="top" id="top"></a>
 <h1>Encrypted Master Password for Zen Cart v1.5.3 to v1.5.5</h1>
-<h3>Version 2.2.0 by lat9. <span class="smaller">Copyright &copy; 2013-2016, <a href="http://vinosdefrutastropicales.com" target="_blank">Vinos de Frutas Tropicales</a></span></h3>
+<h3>Version 2.2.1 by lat9. <span class="smaller">Copyright &copy; 2013-2016, <a href="http://vinosdefrutastropicales.com" target="_blank">Vinos de Frutas Tropicales</a></span></h3>
 <p>Current Support Thread at Zen Cart Forums: <a href="www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support" target="_blank">www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support</a></p>
 <h3>Usage Notes</h3>
 <ol>
@@ -87,7 +87,7 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
   </ol></li>
   <li>Compare the plugin's <strong>/YOUR_ADMIN/customers.php</strong> with the one currently being used at your store. <em>EMP</em> currently provides the as-shipped Zen Cart 1.5.5 version of this file within its distribution.  When integrating with changes to your pre-ZC1.5.5 store's files, the important line to merge is found at line #1266:<br /><br /><code>$zco_notifier-&gt;notify('NOTIFY_ADMIN_CUSTOMERS_MENU_BUTTONS', $cInfo, $contents);</code><br /><br />Simply ensure that this line of code is present in your customized version of <code>customers.php</code> at the same point in the processing as in the distribution copy.</li>
   <li>Rename /YOUR_ADMIN to match the name of your Zen Cart admin directory.</li>
-  <li>Upload the plugin's files to your store's file system:<ol class="minspacing" type="a">
+  <li>Upload the plugin's files to your store's file system:<ol type="a">
     <li>/includes/auto_loaders/config.emp_login_link.php</li>
     <li>/includes/classes/observers/class.emp_order_observer.php</li>
     <li><span class="corefile">/YOUR_ADMIN/customers.php</span> <span class="smaller">(This is the Zen Cart v1.5.5 version of the file)</span></li>
@@ -113,6 +113,12 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
 <hr />
 <h2>Version History:</h2>
 <ul>
+  <li>v2.2.1, 2016-05-05 (lat9):<ul>
+    <li>BUGFIX: Debug-log generated on login.</li>
+    <li>The following files were changed:<ol>
+      <li>/includes/classes/observers/class.emp_order_observer.php</li>
+    </ol></li>
+  </ul></li>
   <li>v2.2.0, 2016-04-14 (lat9):<ul>
     <li>CHANGE: Use Zen Cart v1.5.5 as the core-file overwrite change-basis.</li>
     <li>CHANGE: Use Zen Cart 1.5.5 notifier to add the &quot;Place Order&quot; button on the <em>Customers-&gt;Customers</em> page.</li>
