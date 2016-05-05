@@ -86,7 +86,7 @@ class emp_order_observer extends base
                             'page_accessed' => 'login.php',
                             'page_parameters' => '',
                             'ip_address' => substr ($_SERVER['REMOTE_ADDR'],0,45),
-                            'gzpost' => gzdeflate (json_encode (array ( 'action' => 'emp_admin_login', 'customer_email_address' => $p1 )), 7),
+                            'gzpost' => gzdeflate (json_encode (array ( 'action' => 'emp_admin_login', 'customer_email_address' => $p1a )), 7),
                             'flagged' => 0,
                             'attention' => '',
                             'severity' => 'info',
