@@ -2,7 +2,7 @@
 // -----
 // Part of the Encrypted Master Password plugin, provided by lat9@vinosdefrutastropicales.com
 //
-// Copyright (C) 2013-2016 Vinos de Frutas Tropicales
+// Copyright (C) 2013-2018 Vinos de Frutas Tropicales
 //
 // @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
 //
@@ -16,8 +16,9 @@ if (isset ($_POST['email_address'])) {
 
 class emp_order_observer extends base 
 {
-    function __construct () {
-        $this->attach ($this, array ('NOTIFY_ORDER_DURING_CREATE_ADDED_ORDER_COMMENT', 'NOTIFY_PROCESS_3RD_PARTY_LOGINS') );
+    function __construct() 
+    {
+        $this->attach($this, array ('NOTIFY_ORDER_DURING_CREATE_ADDED_ORDER_COMMENT', 'NOTIFY_PROCESS_3RD_PARTY_LOGINS') );
     }
   
 
@@ -59,17 +60,18 @@ class emp_order_observer extends base
             // $p3 ... contains the binary flag that indicates whether or not the current login is authorized.
             //
             case 'NOTIFY_PROCESS_3RD_PARTY_LOGINS':
-                if (!$p3 && zen_not_null ($p2)) {
-                    $check = $db->Execute ("SELECT admin_id, admin_pass FROM " . TABLE_ADMIN . " WHERE admin_id = " . (int)EMP_LOGIN_ADMIN_ID);
-                    if (!$check->EOF && zen_validate_password ($p2, $check->fields['admin_pass'])) {
+                if (!$p3 && zen_not_null($p2)) {
+                    $pwd2 = htmlspecialchars($p2, ENT_COMPAT, CHARSET);
+                    $check = $db->Execute("SELECT admin_id, admin_pass FROM " . TABLE_ADMIN . " WHERE admin_id = " . (int)EMP_LOGIN_ADMIN_ID);
+                    if (!$check->EOF && (zen_validate_password($p2, $check->fields['admin_pass'])) || zen_validate_password($pwd2, $check->fields['admin_pass'])) {
                         $p3 = true;
                         $_SESSION['emp_admin_login'] = true;
                         $_SESSION['emp_admin_id'] = EMP_LOGIN_ADMIN_ID;
                         
                     } else {
-                        $admin_profiles = $db->Execute ("SELECT admin_id, admin_pass FROM " . TABLE_ADMIN . " WHERE admin_profile IN (" . preg_replace('/[^0-9,]/', '', EMP_LOGIN_ADMIN_PROFILE_ID) . ")");
+                        $admin_profiles = $db->Execute("SELECT admin_id, admin_pass FROM " . TABLE_ADMIN . " WHERE admin_profile IN (" . preg_replace('/[^0-9,]/', '', EMP_LOGIN_ADMIN_PROFILE_ID) . ")");
                         while (!$admin_profiles->EOF && !$p3) {
-                            $p3 = zen_validate_password($p2, $admin_profiles->fields['admin_pass']);
+                            $p3 = (zen_validate_password($p2, $admin_profiles->fields['admin_pass']) || zen_validate_password($pwd2, $admin_profiles->fields['admin_pass']));
                             if ($p3) {
                                 $_SESSION['emp_admin_login'] = true;
                                 $_SESSION['emp_admin_id'] = $admin_profiles->fields['admin_id'];
@@ -80,19 +82,19 @@ class emp_order_observer extends base
                     }
                   
                     if ($p3) {
-                        $sql_data_array = array ( 
+                        $sql_data_array = array( 
                             'access_date' => 'now()',
                             'admin_id' => $_SESSION['emp_admin_id'],
                             'page_accessed' => 'login.php',
                             'page_parameters' => '',
-                            'ip_address' => substr ($_SERVER['REMOTE_ADDR'],0,45),
-                            'gzpost' => gzdeflate (json_encode (array ( 'action' => 'emp_admin_login', 'customer_email_address' => $p1a )), 7),
+                            'ip_address' => substr($_SERVER['REMOTE_ADDR'],0,45),
+                            'gzpost' => gzdeflate(json_encode(array('action' => 'emp_admin_login', 'customer_email_address' => $p1a)), 7),
                             'flagged' => 0,
                             'attention' => '',
                             'severity' => 'info',
                             'logmessage' => 'EMP admin login',
                         );
-                        zen_db_perform (TABLE_ADMIN_ACTIVITY_LOG, $sql_data_array);
+                        zen_db_perform(TABLE_ADMIN_ACTIVITY_LOG, $sql_data_array);
                     }
                 }
                 break;
@@ -102,5 +104,4 @@ class emp_order_observer extends base
 
         }
     }
- 
 }

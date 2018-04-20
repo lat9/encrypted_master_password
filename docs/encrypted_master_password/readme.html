@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Encrypted Master Password (Zen-Cart v1.5.3 to v1.5.5)</title>
+<title>Encrypted Master Password (Zen-Cart v1.5.5+)</title>
 
 <style type="text/css">
 <!--
@@ -40,7 +40,7 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
 <body>
 <a name="top" id="top"></a>
 <h1>Encrypted Master Password for Zen Cart v1.5.5 (and later)</h1>
-<h3>Version 2.3.0 by lat9. <span class="smaller">Copyright &copy; 2013-2017, <a href="http://vinosdefrutastropicales.com" target="_blank">Vinos de Frutas Tropicales</a></span></h3>
+<h3>Version 2.3.1 by lat9. <span class="smaller">Copyright &copy; 2013-2018, <a href="http://vinosdefrutastropicales.com" target="_blank">Vinos de Frutas Tropicales</a></span></h3>
 <p>Current Support Thread at Zen Cart Forums: <a href="www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support" target="_blank">www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support</a></p>
 <h3>Usage Notes</h3>
 <ol>
@@ -104,6 +104,12 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
 <hr />
 <h2>Version History:</h2>
 <ul>
+  <li>v2.3.1, 2018-04-20 (lat9):<ul>
+    <li>BUGFIX: Admin passwords with &quot;special&quot; characters are rejected during <em>EMP</em> customer login.</li>
+    <li>The following files were changed:<ol>
+      <li>/includes/classes/observers/class.emp_order_observer.php</li>
+    </ol></li>
+  </ul></li>
   <li>v2.3.0, 2017-08-08 (lat9):<ul>
     <li>BUGFIX: Activity log doesn't show customer's account.</li>
     <li>BUGFIX: Disabled &quot;admin-profile&quot; setting caused single admin-id setting to be inoperative.</li>
