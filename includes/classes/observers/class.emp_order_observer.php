@@ -2,7 +2,7 @@
 // -----
 // Part of the Encrypted Master Password plugin, provided by lat9@vinosdefrutastropicales.com
 //
-// Copyright (C) 2013-2018 Vinos de Frutas Tropicales
+// Copyright (C) 2013-2019 Vinos de Frutas Tropicales
 //
 // @license http://www.zen-cart.com/license/2_0.txt GNU Public License V2.0
 //
@@ -10,7 +10,7 @@
 // When entered via the "Place Order" button from the admin, the customer's email address is posted but somehow (on PHP 5.4)
 // doesn't get recorded in the $GLOBALS array (which is where the default input field values are gathered).
 //
-if (isset ($_POST['email_address'])) {
+if (isset($_POST['email_address'])) {
     $GLOBALS['email_address'] = $_POST['email_address'];
 }
 
@@ -18,7 +18,20 @@ class emp_order_observer extends base
 {
     function __construct() 
     {
-        $this->attach($this, array ('NOTIFY_ORDER_DURING_CREATE_ADDED_ORDER_COMMENT', 'NOTIFY_PROCESS_3RD_PARTY_LOGINS') );
+        // -----
+        // If an EMP admin is currently logged into the customer's account, let that admin know who s/he is shopping for.
+        //
+        if (isset($_SESSION['emp_admin_id'])) {
+            $shopping_for_name = $_SESSION['customer_first_name'] . ' ' . $_SESSION['customer_last_name'];
+            $GLOBALS['messageStack']->add('header', sprintf(EMP_SHOPPING_FOR_MESSAGE, $shopping_for_name, $_SESSION['emp_customer_email_address']), 'success');
+        }
+        
+        // -----
+        // Watch for EMP-related events so long as it's been configured.
+        //
+        if (defined('EMP_LOGIN_ADMIN_PROFILE_ID') && defined('EMP_LOGIN_ADMIN_ID')) {
+            $this->attach($this, array('NOTIFY_ORDER_DURING_CREATE_ADDED_ORDER_COMMENT', 'NOTIFY_PROCESS_3RD_PARTY_LOGINS'));
+        }
     }
   
 
@@ -40,12 +53,21 @@ class emp_order_observer extends base
                     $admin_name = (($admin_info->EOF) ? '' : $admin_info->fields['admin_name']) . ' [' . $_SESSION['emp_admin_id'] . ']';
 
                     $orders_id_sql = 'orders_id = :ordersID';
-                    $orders_id_sql = $db->bindVars ($orders_id_sql, ':ordersID', $p1a['orders_id'], 'integer');
+                    $orders_id_sql = $db->bindVars($orders_id_sql, ':ordersID', $p1a['orders_id'], 'integer');
 
-                    $osh_info = $db->Execute("SELECT MAX(orders_status_history_id) as orders_status_history_id FROM " . TABLE_ORDERS_STATUS_HISTORY . " WHERE $orders_id_sql");
+                    $osh_info = $db->Execute(
+                        "SELECT MAX(orders_status_history_id) as orders_status_history_id 
+                           FROM " . TABLE_ORDERS_STATUS_HISTORY . " 
+                          WHERE $orders_id_sql"
+                    );
                   
                     if (!$osh_info->EOF) {
-                        $db->Execute("UPDATE " . TABLE_ORDERS_STATUS_HISTORY . " SET updated_by = '$admin_name' WHERE orders_status_history_id = " . $osh_info->fields['orders_status_history_id']);
+                        $db->Execute(
+                            "UPDATE " . TABLE_ORDERS_STATUS_HISTORY . " 
+                                SET updated_by = '$admin_name' 
+                              WHERE orders_status_history_id = " . $osh_info->fields['orders_status_history_id'] . "
+                              LIMIT 1"
+                        );
                     }
                 }
                 break;
@@ -62,14 +84,23 @@ class emp_order_observer extends base
             case 'NOTIFY_PROCESS_3RD_PARTY_LOGINS':
                 if (!$p3 && zen_not_null($p2)) {
                     $pwd2 = htmlspecialchars($p2, ENT_COMPAT, CHARSET);
-                    $check = $db->Execute("SELECT admin_id, admin_pass FROM " . TABLE_ADMIN . " WHERE admin_id = " . (int)EMP_LOGIN_ADMIN_ID);
+                    $check = $db->Execute(
+                        "SELECT admin_id, admin_pass 
+                           FROM " . TABLE_ADMIN . " 
+                          WHERE admin_id = " . (int)EMP_LOGIN_ADMIN_ID . "
+                          LIMIT 1"
+                    );
                     if (!$check->EOF && (zen_validate_password($p2, $check->fields['admin_pass'])) || zen_validate_password($pwd2, $check->fields['admin_pass'])) {
                         $p3 = true;
                         $_SESSION['emp_admin_login'] = true;
                         $_SESSION['emp_admin_id'] = EMP_LOGIN_ADMIN_ID;
                         
                     } else {
-                        $admin_profiles = $db->Execute("SELECT admin_id, admin_pass FROM " . TABLE_ADMIN . " WHERE admin_profile IN (" . preg_replace('/[^0-9,]/', '', EMP_LOGIN_ADMIN_PROFILE_ID) . ")");
+                        $admin_profiles = $db->Execute(
+                            "SELECT admin_id, admin_pass 
+                               FROM " . TABLE_ADMIN . " 
+                              WHERE admin_profile IN (" . preg_replace('/[^0-9,]/', '', EMP_LOGIN_ADMIN_PROFILE_ID) . ")"
+                        );
                         while (!$admin_profiles->EOF && !$p3) {
                             $p3 = (zen_validate_password($p2, $admin_profiles->fields['admin_pass']) || zen_validate_password($pwd2, $admin_profiles->fields['admin_pass']));
                             if ($p3) {
@@ -77,11 +108,11 @@ class emp_order_observer extends base
                                 $_SESSION['emp_admin_id'] = $admin_profiles->fields['admin_id'];
                             }
                             $admin_profiles->MoveNext();
-                      
                         }
                     }
                   
                     if ($p3) {
+                        $_SESSION['emp_customer_email_address'] = $p1a;
                         $sql_data_array = array( 
                             'access_date' => 'now()',
                             'admin_id' => $_SESSION['emp_admin_id'],
@@ -101,7 +132,6 @@ class emp_order_observer extends base
 
             default:
                 break;
-
         }
     }
 }
