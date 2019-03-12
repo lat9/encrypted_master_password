@@ -40,8 +40,8 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
 <body>
 <a name="top" id="top"></a>
 <h1>Encrypted Master Password for Zen Cart v1.5.5 (and later)</h1>
-<h3>Version 2.3.1 by lat9. <span class="smaller">Copyright &copy; 2013-2018, <a href="http://vinosdefrutastropicales.com" target="_blank">Vinos de Frutas Tropicales</a></span></h3>
-<p>Current Support Thread at Zen Cart Forums: <a href="www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support" target="_blank">www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support</a></p>
+<h3>Version 2.4.0 by lat9. <span class="smaller">Copyright &copy; 2013-2019, <a href="https://vinosdefrutastropicales.com" target="_blank">Vinos de Frutas Tropicales</a></span></h3>
+<p>Current Support Thread at Zen Cart Forums: <a href="https://www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support" target="_blank">www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support</a></p>
 <h3>Usage Notes</h3>
 <ol>
   <li>Starting with v2.2.0, this plugin drops support for Zen Cart versions <em>prior to</em> v1.5.3.  If your store is using an older Zen Cart version, please use an earlier version of <em>EMP</em>.</li>
@@ -104,6 +104,14 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
 <hr />
 <h2>Version History:</h2>
 <ul>
+  <li>v2.4.0, 2019-03-xx (lat9):<ul>
+    <li>CHANGE: Zen Cart 1.5.6 interoperability, use Bootstrap-styled button in admin <em>Customers-&gt;Customers</em>.</li>
+    <li>The following files were changed:<ol>
+      <li>/YOUR_ADMIN/includes/classes/observers/class.emp_admin_customers_observer.php</li>
+      <li>/YOUR_ADMIN/includes/languages/dutch/extra_definitions/emp_button_definitions.php</li>
+      <li>/YOUR_ADMIN/includes/languages/english/extra_definitions/emp_button_definitions.php</li>
+    </ol></li>
+  </ul></li>
   <li>v2.3.1, 2018-04-20 (lat9):<ul>
     <li>BUGFIX: Admin passwords with &quot;special&quot; characters are rejected during <em>EMP</em> customer login.</li>
     <li>The following files were changed:<ol>
