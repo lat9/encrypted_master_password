@@ -66,10 +66,11 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
 <p>When an admin with EMP permissions views the <em>Customers-&gt;Customers</em> screen, there is an additional button available for the currently-selected customer: <strong>Place Order</strong>. Clicking that button will open a new window, taking the admin to your store's <em>login</em> page.  From that page, the admin enters his/her Zen Cart admin password to log into the customer's account!</p>
 <p><strong>Note</strong> Versions 1.6.0 through 1.8.0 of this plugin provided an &quot;automatic&quot; login to the customer's account; version 2.0.0 changed this behavior, now requiring the admin-level password to log into the customer's account.  This change was made to enable the use of the additional password validation methods introduced in Zen Cart v1.5.3 and in light of potential PCI concerns.  With the previous behavior, if someone broke into your Zen Cart admin they would have &quot;the keys to the kingdom&quot; &mdash; access to all your customers' accounts.</p>
 <h3>In Your Store</h3>
-<p>When an EMP admin logs into a customer account, two session variables are set to identify this condition for future, additional plugins:</p>
+<p>When an EMP admin logs into a customer account, three session variables are set to identify this condition for future, additional plugins:</p>
 <ol>
   <li>$_SESSION['emp_admin_login'] is set to <em>true</em>.</li>
   <li>$_SESSION['emp_admin_id'] is set to the <em>admin_id</em> of the currently signed-in admin</li>
+  <li>$_SESSION['emp_customer_email_address'] is set to the email address of the customer for whom the admin is shopping; added in v2.4.0.</li>
 </ol>
 <p>In addition, an entry is written to the <b>admin_activity_log</b> to record the event.  If an order is placed by the <em>EMP</em> admin on the customer's behalf, the <b>updated_by</b> field in the order's status history is set to identify the admin that placed the order (if that field has been added).</p>
 <p>Starting with v2.1.0 of this plugin, a signed-in EMP admin can also change the customer's password on their behalf.</p>
@@ -86,6 +87,8 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
   <li>Upload the plugin's files to your store's file system:<ol type="a">
     <li>/includes/auto_loaders/config.emp_login_link.php</li>
     <li>/includes/classes/observers/class.emp_order_observer.php</li>
+    <li>/includes/languages/dutch/extra_definitions/encrypted_master_password_messages.php <span class="smaller">(Added for v2.4.0)</span></li>
+    <li>/includes/languages/english/extra_definitions/encrypted_master_password_messages.php <span class="smaller">(Added for v2.4.0)</span></li>
     <li>/YOUR_ADMIN/includes/auto_loaders/config.emp_customers_button.php</li>
     <li>/YOUR_ADMIN/includes/classes/observers/class.emp_admin_customers_observer.php</li>
     <li>/YOUR_ADMIN/includes/functions/extra_functions/init_emp_configuration.php</li>
@@ -105,8 +108,12 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
 <h2>Version History:</h2>
 <ul>
   <li>v2.4.0, 2019-03-xx (lat9):<ul>
-    <li>CHANGE: Zen Cart 1.5.6 interoperability, use Bootstrap-styled button in admin <em>Customers-&gt;Customers</em>.</li>
-    <li>The following files were changed:<ol>
+    <li>CHANGE: Zen Cart 1.5.6 interoperability, use a Bootstrap-styled button in admin <em>Customers-&gt;Customers</em>.</li>
+    <li>CHANGE: When an <em>EMP</em> admin is logged into a customer's account, display a storefront header message identifying who the admin is shopping for.</li>
+    <li>The following files were changed/added:<ol>
+      <li>/includes/classes/observers/class.emp_order_observer.php</li>
+      <li>/includes/languages/dutch/extra_definitions/encrypted_master_password_messages.php <span class="smaller">(Added)</span></li>
+      <li>/includes/languages/english/extra_definitions/encrypted_master_password_messages.php <span class="smaller">(Added)</span></li>
       <li>/YOUR_ADMIN/includes/classes/observers/class.emp_admin_customers_observer.php</li>
       <li>/YOUR_ADMIN/includes/languages/dutch/extra_definitions/emp_button_definitions.php</li>
       <li>/YOUR_ADMIN/includes/languages/english/extra_definitions/emp_button_definitions.php</li>
