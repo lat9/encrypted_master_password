@@ -72,7 +72,7 @@ class emp_admin_customers_observer extends base
                     } else {
                         $p2[] = array(
                             'align' => 'text-center',
-                            'text' => '<div align="center">' . $login_form_start . $email_hidden_field . '<input class="btn btn-primary" type="submit" value="' . EMP_BUTTON_PLACEORDER . '" title="' . EMP_BUTTON_PLACEORDER_ALT . '"></form></div>'
+                            'text' => $login_form_start . $email_hidden_field . '<input class="btn btn-primary" type="submit" value="' . EMP_BUTTON_PLACEORDER . '" title="' . EMP_BUTTON_PLACEORDER_ALT . '"></form>'
                         );
                     }
 
