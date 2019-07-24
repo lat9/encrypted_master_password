@@ -23,7 +23,14 @@ class emp_order_observer extends base
         //
         if (isset($_SESSION['emp_admin_id'])) {
             $shopping_for_name = $_SESSION['customer_first_name'] . ' ' . $_SESSION['customer_last_name'];
-            $GLOBALS['messageStack']->add('header', sprintf(EMP_SHOPPING_FOR_MESSAGE, $shopping_for_name, $_SESSION['emp_customer_email_address']), 'success');
+            if (!defined('EMP_SHOPPING_FOR_MESSAGE_SEVERITY')) {
+                define('EMP_SHOPPING_FOR_MESSAGE_SEVERITY', 'success');
+            }
+            $severity = EMP_SHOPPING_FOR_MESSAGE_SEVERITY;
+            if (!in_array($severity, array('success', 'caution', 'warning', 'error'))) {
+                $severity = 'success';
+            }
+            $GLOBALS['messageStack']->add('header', sprintf(EMP_SHOPPING_FOR_MESSAGE, $shopping_for_name, $_SESSION['emp_customer_email_address']), $severity);
         }
         
         // -----
@@ -90,7 +97,7 @@ class emp_order_observer extends base
                           WHERE admin_id = " . (int)EMP_LOGIN_ADMIN_ID . "
                           LIMIT 1"
                     );
-                    if (!$check->EOF && (zen_validate_password($p2, $check->fields['admin_pass'])) || zen_validate_password($pwd2, $check->fields['admin_pass'])) {
+                    if (!$check->EOF && (zen_validate_password($p2, $check->fields['admin_pass']) || zen_validate_password($pwd2, $check->fields['admin_pass']))) {
                         $p3 = true;
                         $_SESSION['emp_admin_login'] = true;
                         $_SESSION['emp_admin_id'] = EMP_LOGIN_ADMIN_ID;

@@ -40,7 +40,7 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
 <body>
 <a name="top" id="top"></a>
 <h1>Encrypted Master Password for Zen Cart v1.5.5 (and later)</h1>
-<h3>Version 2.4.1 by lat9. <span class="smaller">Copyright &copy; 2013-2019, <a href="https://vinosdefrutastropicales.com" target="_blank">Vinos de Frutas Tropicales</a></span></h3>
+<h3>Version 2.4.2 by lat9. <span class="smaller">Copyright &copy; 2013-2019, <a href="https://vinosdefrutastropicales.com" target="_blank">Vinos de Frutas Tropicales</a></span></h3>
 <p>Current Support Thread at Zen Cart Forums: <a href="https://www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support" target="_blank">www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support</a></p>
 <h3>Usage Notes</h3>
 <ol>
@@ -107,6 +107,15 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
 <hr />
 <h2>Version History:</h2>
 <ul>
+  <li>v2.4.2, 2019-07-24 (lat9):<ul>
+    <li>BUGFIX: Debug-log issued when invalid EMP password supplied.</li>
+    <li>CHANGE: Enable stores to customize the severity for the storefront message.</li>
+    <li>The following files were changed:<ol>
+      <li>/includes/classes/observers/class.emp_order_observer.php</li>
+      <li>/includes/languages/dutch/extra_definitions/encrypted_master_password_messages.php</li>
+      <li>/includes/languages/english/extra_definitions/encrypted_master_password_messages.php</li>
+    </ol></li>
+  </ul></li>
   <li>v2.4.1, 2019-06-01 (lat9):<ul>
     <li>BUGFIX: Correct non-HTML5 <code>align</code> attribute for zc156+.</li>
     <li>The following files were changed:<ol>
