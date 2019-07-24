@@ -11,3 +11,9 @@
 // into this message.
 //
 define('EMP_SHOPPING_FOR_MESSAGE', 'Op dit moment winkelen voor %1$s (%2$s).');
+
+// -----
+// Identify the messageStack "severity" to be applied to the above message, one of 'success',
+// 'warning', 'caution', 'error' (defaults to 'success').
+//
+define('EMP_SHOPPING_FOR_MESSAGE_SEVERITY', 'success');
