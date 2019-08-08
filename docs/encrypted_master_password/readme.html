@@ -40,7 +40,7 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
 <body>
 <a name="top" id="top"></a>
 <h1>Encrypted Master Password for Zen Cart v1.5.5 (and later)</h1>
-<h3>Version 2.4.2 by lat9. <span class="smaller">Copyright &copy; 2013-2019, <a href="https://vinosdefrutastropicales.com" target="_blank">Vinos de Frutas Tropicales</a></span></h3>
+<h3>Version 2.5.0 by lat9. <span class="smaller">Copyright &copy; 2013-2019, <a href="https://vinosdefrutastropicales.com" target="_blank">Vinos de Frutas Tropicales</a></span></h3>
 <p>Current Support Thread at Zen Cart Forums: <a href="https://www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support" target="_blank">www.zen-cart.com/showthread.php?179888-Encrypted-Master-Password-support</a></p>
 <h3>Usage Notes</h3>
 <ol>
@@ -52,19 +52,28 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
 <h2>What it does</h2>
 <p><em>Encrypted Master Password</em> (EMP) allows one or more of your store's administrators to login to any customer account using <em>their</em> administrator password in conjunction with a customer's email address.</p>
 <h3>Configuration-&gt;My Store</h3>
-<p>Once you have have installed the plugin, two configuration values are available in your admin's <em>Configuration-&gt;My Store</em> to provide customization as described below.</p>
+<p>Once you have have installed the plugin, three configuration values are available in your admin's <em>Configuration-&gt;My Store</em> to provide customization as described below.</p>
 <p><strong>Encrypted Master Password: Single Admin ID</strong>. If you want a single admin user to have EMP privileges, you'll set this value to the <em>admin_id</em> of that admin user.  The default (1) selects the first admin user in your store. To find the <em>admin_id</em> value that you want to use, log into your store's admin and click <em>Admin Access Management-&gt;Admin Users</em>.  The left-hand column will be titled <strong>ID</strong>, look for the number that identifies the admin account you've selected.</p>
 <p><strong>Encrypted Master Password: Admin Profile ID</strong>. If you want multiple admin users to have EMP privileges, they must be associated with one of the admin <em>User Profiles</em> that you select.  Set this value to a packed, comma-separated list of profile ids (e.g. <b>1,2,3</b>) and all admins in the specified profiles will have EMP authority.  The default value (1) selects all <em>Superuser</em> admins for your store. To find the <em>profile_id</em> values that you want to use, log into your store's admin and click <em>Admin Access Management-&gt;Admin Profiles</em>.  The left-hand column will be titled <strong>ID</strong>, look for the numbers that are associated with the admin user profiles want to configure.</p>
-<p>The two configuration values can be used in combination, so that you can specify:</p>
+<p>These two configuration values can be used in combination, so that you can specify:</p>
 <ul>
   <li><em>One single admin that has EMP privileges:</em> Single Admin ID set to a non-zero <em>admin_id</em>, Admin Profile ID set to 0.</li>
   <li><em>Only admins in the given profiles have EMP privileges:</em> Single Admin ID set to 0, Admin Profile ID set to a non-zero <em>profile_id</em>.</li>
   <li><em>All admins in the given profiles and one admin outside those profiles have EMP privileges:</em> Single Admin ID set to a non-zero <em>admin_id</em>, Admin Profile ID set to a non-zero <em>profile_id</em>.</li>
   <li><em>No admins have EMP privileges:</em> Single Admin ID set to 0, Admin Profile ID set to 0.</li>
 </ul>
+<p>For v2.5.0, an additional configuration setting is added: <strong>Encrypted Master Password: Automatic Login?</strong>.  That value, when set to <em>true</em>, enables a one-click login to the selected customer's account.  Note that the default value is <em>false</em>.</p>
 <h3>Customers-&gt;Customers</h3>
-<p>When an admin with EMP permissions views the <em>Customers-&gt;Customers</em> screen, there is an additional button available for the currently-selected customer: <strong>Place Order</strong>. Clicking that button will open a new window, taking the admin to your store's <em>login</em> page.  From that page, the admin enters his/her Zen Cart admin password to log into the customer's account!</p>
-<p><strong>Note</strong> Versions 1.6.0 through 1.8.0 of this plugin provided an &quot;automatic&quot; login to the customer's account; version 2.0.0 changed this behavior, now requiring the admin-level password to log into the customer's account.  This change was made to enable the use of the additional password validation methods introduced in Zen Cart v1.5.3 and in light of potential PCI concerns.  With the previous behavior, if someone broke into your Zen Cart admin they would have &quot;the keys to the kingdom&quot; &mdash; access to all your customers' accounts.</p>
+<p>When an admin with EMP permissions views the <em>Customers-&gt;Customers</em> screen, there is an additional button available for the currently-selected customer: <strong>Place Order</strong>. The behavior of that button-click depends on the value set for EMP's <b>Automatic Login?</b> configuration setting:</p>
+<ol>
+  <li>If <em>false</em>, the button-click opens a new window, taking the admin to your store's <em>login</em> page.  From that page, the admin enters his/her Zen Cart admin password to log into the customer's account!</li>
+  <li>If <em>true</em>, the button-click opens a new window, with the admin <em>automatically</em> logged into the customer's account.</li>
+</ol>
+<p><strong>Notes:</strong></p>
+<ul>
+  <li>Versions 1.6.0 through 1.8.0 of this plugin provided an &quot;automatic&quot; login to the customer's account; version 2.0.0 changed this behavior, now requiring the admin-level password to log into the customer's account.  This change was made to enable the use of the additional password validation methods introduced in Zen Cart v1.5.3 and in light of potential PCI concerns.</li>
+  <li>Version 2.5.0 restores that capability, under configuration control.</li>
+</ul>
 <h3>In Your Store</h3>
 <p>When an EMP admin logs into a customer account, three session variables are set to identify this condition for future, additional plugins:</p>
 <ol>
@@ -87,6 +96,7 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
   <li>Upload the plugin's files to your store's file system:<ol type="a">
     <li>/includes/auto_loaders/config.emp_login_link.php</li>
     <li>/includes/classes/observers/class.emp_order_observer.php</li>
+    <li>/includes/init_includes/init_emp_storefront.php <span class="smaller">(Added for v2.5.0)</span></li>
     <li>/includes/languages/dutch/extra_definitions/encrypted_master_password_messages.php <span class="smaller">(Added for v2.4.0)</span></li>
     <li>/includes/languages/english/extra_definitions/encrypted_master_password_messages.php <span class="smaller">(Added for v2.4.0)</span></li>
     <li>/YOUR_ADMIN/includes/auto_loaders/config.emp_customers_button.php</li>
@@ -107,6 +117,16 @@ td.none { font-weight: bold; text-align: center; padding-top: 10px; }
 <hr />
 <h2>Version History:</h2>
 <ul>
+  <li>v2.5.0, 2019-08-08 (lat9):<ul>
+    <li>CHANGE: Resurrect the one-click login to a customer's account, under configuration control.</li>
+    <li>The following files were changed:<ol>
+      <li>/includes/auto_loaders/config.emp_login_link.php</li>
+      <li>/includes/classes/observers/class.emp_order_observer.php</li>
+      <li>/includes/init_includes/init_emp_storefront.php <span class="added">(Added)</span></li>
+      <li>/YOUR_ADMIN/includes/classes/observers/class.emp_admin_customers_observer.php</li>
+      <li>/YOUR_ADMIN/includes/functions/extra_functions/init_emp_configuration.php</li>
+    </ol></li>
+  </ul></li>
   <li>v2.4.2, 2019-07-24 (lat9):<ul>
     <li>BUGFIX: Debug-log issued when invalid EMP password supplied.</li>
     <li>CHANGE: Enable stores to customize the severity for the storefront message.</li>

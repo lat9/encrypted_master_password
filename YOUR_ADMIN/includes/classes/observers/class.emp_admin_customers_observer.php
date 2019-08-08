@@ -31,8 +31,8 @@ class emp_admin_customers_observer extends base
             //
             case 'NOTIFY_ADMIN_CUSTOMERS_MENU_BUTTONS':
                 if (empty($p1) || !is_object($p1) || empty($p2) || !is_array($p2)) {
-                    trigger_error ('Missing or invalid parameters for the NOTIFY_ADMIN_CUSTOMERS_MENU_BUTTONS notifier.', E_USER_ERROR);
-                    exit ();
+                    trigger_error('Missing or invalid parameters for the NOTIFY_ADMIN_CUSTOMERS_MENU_BUTTONS notifier.', E_USER_ERROR);
+                    exit();
                 }
 
                 $admin_in_profile = false;
@@ -58,24 +58,50 @@ class emp_admin_customers_observer extends base
                 }
 
                 if ($_SESSION['admin_id'] == (int)EMP_LOGIN_ADMIN_ID || $admin_in_profile) {
+                    if (EMP_LOGIN_AUTOMATIC == 'true') {
+                        $admin_info = $GLOBALS['db']->Execute(
+                            "SELECT admin_pass
+                               FROM " . TABLE_ADMIN . "
+                              WHERE admin_id = " . (int)$_SESSION['admin_id'] . "
+                              LIMIT 1"
+                        );
+                        if ($admin_info->EOF) {
+                            break;
+                        }
+                        
+                        if (function_exists('random_bytes')) {
+                            $seed = bin2hex(random_bytes(16));
+                        } else {
+                            $seed = md5(uniqid(rand(), true));
+                        }
+                        
+                        $hash = md5($p1->customers_email_address . (string)$p1->customers_id . (string)$_SESSION['admin_id'] . $admin_info->fields['admin_pass'] . $seed);
+                        $login_form_start = '<form target="_blank" name="login" action="' . zen_catalog_href_link(FILENAME_LOGIN, 'action=process', 'SSL') . '" method="post">';
+                        $hidden_fields = zen_draw_hidden_field('email_address', $p1->customers_email_address);
+                        $hidden_fields .= zen_draw_hidden_field('cID', $p1->customers_id);
+                        $hidden_fields .= zen_draw_hidden_field('aID', $_SESSION['admin_id']);
+                        $hidden_fields .= zen_draw_hidden_field('keyValue', $hash);
+                        $hidden_fields .= zen_draw_hidden_field('keyValue2', $seed);
+                    } else {
+                        $login_form_start = '<form target="_blank" name="login" action="' . zen_catalog_href_link(FILENAME_LOGIN, '', 'SSL') . '" method="post">';
+                        $hidden_fields = zen_draw_hidden_field('email_address', $p1->customers_email_address);
+                    }
+                    
                     // -----
                     // Set the "Place Order" button into the 'contents' array; the formatting used is dependent on the Zen Cart
                     // version (the Bootstrap interface was introduced in Zen Cart 1.5.6).
                     //
-                    $login_form_start = '<form target="_blank" name="login" action="' . zen_catalog_href_link(FILENAME_LOGIN, '', 'SSL') . '" method="post">';
-                    $email_hidden_field = zen_draw_hidden_field('email_address', $p1->customers_email_address);
                     if (PROJECT_VERSION_MAJOR . '.' . PROJECT_VERSION_MINOR < '1.5.6') {
                         $p2[] = array(
                             'align' => 'center', 
-                            'text' => '<div align="center">' . $login_form_start . $email_hidden_field . zen_image_submit('button_placeorder.gif', EMP_BUTTON_PLACEORDER_ALT) . '</form></div>'
+                            'text' => '<div align="center">' . $login_form_start . $hidden_fields . zen_image_submit('button_placeorder.gif', EMP_BUTTON_PLACEORDER_ALT) . '</form></div>'
                         );
                     } else {
                         $p2[] = array(
                             'align' => 'text-center',
-                            'text' => $login_form_start . $email_hidden_field . '<input class="btn btn-primary" type="submit" value="' . EMP_BUTTON_PLACEORDER . '" title="' . EMP_BUTTON_PLACEORDER_ALT . '"></form>'
+                            'text' => $login_form_start . $hidden_fields . '<input class="btn btn-primary" type="submit" value="' . EMP_BUTTON_PLACEORDER . '" title="' . EMP_BUTTON_PLACEORDER_ALT . '"></form>'
                         );
                     }
-
                 }
                 break;
                 
